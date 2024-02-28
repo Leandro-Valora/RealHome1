@@ -1,5 +1,5 @@
 import React from 'react';
-import AdBar from './AdBar';
+import AdBar from '../admin/AdBar.js';
 import Footer from '../components/Footer';
 import UserProfile from '../UserProfile';
 //import "./Admin.css";
@@ -25,11 +25,12 @@ class Admin extends React.Component {
     render() {
         return (
             <>
+            <p>Prova1</p>
                 <AdBar />
                 <br />
                 <div>
                     <header>
-                        <h1 className='titolo-1'><center> Nuovo Benvenuti all'Agenzia Immobiliare Real-Home</center></h1>
+                        <h1 className='titolo-1'><center>Benvenuti all'Agenzia Immobiliare Real-Home</center></h1>
                     </header>
                     <br />
                     <main>
