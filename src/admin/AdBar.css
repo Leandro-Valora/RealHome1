@@ -1,0 +1,146 @@
+.AdBar {
+    background-color: #151f2b; /* Cambio il colore dello sfondo della AdBar */
+    padding: 10px 20px; /* Aggiungo spaziatura interna per migliorare l'aspetto */
+    display: flex; /* Rendi la AdBar un flex container */
+    justify-content: space-between; /* Allinea gli elementi all'interno della AdBar */
+    align-items: center; /* Centra verticalmente gli elementi */
+}
+
+.AdBar-brand img {
+    width: 40px; /* Ridimensiona il logo */
+    height: 40px;
+}
+
+.AdBar-brand img:hover {
+    opacity: 0.8; /* Riduce leggermente l'opacità del logo al passaggio del mouse */
+}
+
+.AdBar-bar {
+    list-style: none; /* Rimuove i punti elenco predefiniti */
+    display: flex; /* Rendi i link dei menu una row flex */
+}
+
+.bar-item {
+    margin-right: 20px; /* Aggiunge spazio tra i menu */
+}
+
+.bar-link {
+    color: #FFFFFF; /* Cambia il colore del testo dei link */
+    text-decoration: none; /* Rimuove il sottolineato predefinito */
+    font-weight: 600; /* Rendi il testo in grassetto */
+}
+
+.bar-link:hover {
+    color: #1DA1F2; /* Cambia il colore del testo al passaggio del mouse */
+}
+
+#footer {
+    background-color:orange;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+.gallery {
+    margin-left: 20%;
+    margin-right: 20%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -ms-scroll-snap-type: x mandatory;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    display: flex;
+}
+
+@media screen and (max-width: 70%) {
+    .gallery {
+        display: block;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        -ms-scroll-snap-type: y mandatory;
+        scroll-snap-type: y mandatory;
+    }
+}
+
+.gallery__img {
+    scroll-snap-align: start;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 40rem;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+.card {
+    width: 100rem;
+}
+
+.btn:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+.btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    white-space: initial;
+    text-decoration: none;
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 600;
+    color: #a66300;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 0 solid transparent;
+    line-height: 1.5;
+    border-radius: 4px;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+button, input {
+    overflow: visible;
+}
+
+button, input, optgroup, select, textarea {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+.offcanvas-login {
+    right: 0;
+    top: 7%;
+    position: fixed;
+    background: lightgoldenrodyellow;
+    width: 200px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    transform: translateX(90%);
+    transition: all .4s ease;
+}
+
+.offcanvas-login:hover {
+    transform: translateX(0);
+}
+
+.container, h3 {
+    padding-top: 0%;
+    color: hsl(29, 100%, 33%);
+}
+
+.bi bi-x-square-fill {
+    color: #a65000;
+}

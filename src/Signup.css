@@ -1,0 +1,39 @@
+.signup-form-wrapper {
+    display: inline-flex;
+    text-align: center;
+  }
+  
+  .signup-form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    margin: 0 auto;
+  }
+  
+  .signup-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .signup-form-group {
+    margin-bottom: 20px;
+  }
+  
+  .signup-form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .signup-form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .signup-form-group .text-danger {
+    color: red;
+  }
+  
