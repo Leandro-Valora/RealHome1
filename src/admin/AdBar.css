@@ -15,22 +15,22 @@
     opacity: 0.8; /* Riduce leggermente l'opacità del logo al passaggio del mouse */
 }
 
-.AdBar-bar {
+.AdBar-nav {
     list-style: none; /* Rimuove i punti elenco predefiniti */
     display: flex; /* Rendi i link dei menu una row flex */
 }
 
-.bar-item {
+.nav-item {
     margin-right: 20px; /* Aggiunge spazio tra i menu */
 }
 
-.bar-link {
+.nav-link {
     color: #FFFFFF; /* Cambia il colore del testo dei link */
     text-decoration: none; /* Rimuove il sottolineato predefinito */
     font-weight: 600; /* Rendi il testo in grassetto */
 }
 
-.bar-link:hover {
+.nav-link:hover {
     color: #1DA1F2; /* Cambia il colore del testo al passaggio del mouse */
 }
 
@@ -143,4 +143,19 @@ button, input, optgroup, select, textarea {
 
 .bi bi-x-square-fill {
     color: #a65000;
+}
+
+.header-2 {
+    display: flex;
+    align-items: center;
+}
+
+.search-inputs {
+    margin-left: auto; /* Spinge gli input a destra */
+    display: flex;
+    align-items: center;
+}
+
+.search-inputs input {
+    margin-right: 10px; /* Aggiunge spazio tra gli input */
 }
