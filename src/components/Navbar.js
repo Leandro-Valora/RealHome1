@@ -1,7 +1,7 @@
 import logo from './pic/logo-sm.png';
 import './Navbar.css';
 import FrmLogin from './FrmLogin';
-
+import { Link } from 'react-router-dom';
 function Navbar() {
     return (
         <>
@@ -13,13 +13,15 @@ function Navbar() {
                     <div className="header-1">
                         <ul className="nav nav-tabs">
                             <li className="nav-item">
-                                <button className="btn btn-outline-primary" data-bs-toggle="arrivi" data-bs-target="#ok" aria-current="page">Home</button>
+                                <button className="btn btn-outline-primary" data-bs-toggle="arrivi" data-bs-target="#ok" aria-current="page">
+                                    <Link to="/">Home</Link>
+                                </button>
                             </li>
                             <li className="nav-item">
-                                <button className="btn btn-outline-primary">Contatti </button>
+                                <button className="btn btn-outline-primary"><Link to="/info/about">About</Link> </button>
                             </li>
                             <li className="nav-item">
-                                <button className="btn btn-outline-primary">FAQ</button>
+                                <button className="btn btn-outline-primary"><Link to="/info/contatti">Contatti</Link> </button>
                             </li>
                         </ul>
                     </div>

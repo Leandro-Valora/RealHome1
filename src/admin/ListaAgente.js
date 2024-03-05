@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import AdBar from './AdBar';
 import Footer from '../components/Footer';
 import UserProfile from '../UserProfile';
-import "./StileTabella.css";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import "./StileTabella.css";
 
-class ListaAdmin extends Component {
+class ListaAgente extends Component {
     state = {
         footers: [
             { id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home'}        
@@ -20,26 +20,26 @@ class ListaAdmin extends Component {
             window.location.href = "/";
         } else {
             // Effettua la chiamata al backend per ottenere gli amministratori
-            axios.post('http://localhost:8081/admin/listaAdmin')
+            axios.post('http://localhost:8081/admin/listaAgente')
             .then(response => {
                 if(response.data.status === "Success") {
                     // Aggiorna lo stato con i dati degli amministratori ottenuti dal backend
-                    if (Array.isArray(response.data.admins)) {
-                        this.setState({ admins: response.data.admins });
+                    if (Array.isArray(response.data.agente)) {
+                        this.setState({ agente: response.data.agente });
                       } else {
-                        console.log("Admins data is not an array");
+                        console.log("agente data is not an array");
                       }
                       
                 } else {
-                    console.log("Failed to fetch admins");
+                    console.log("Failed to fetch agente");
                 }
             })
             .catch(error => {
-                console.log("Error fetching admins:", error);
+                console.log("Error fetching agente:", error);
             });
         }
     }
-    
+
     render() {
         return (
             <>
@@ -49,40 +49,33 @@ class ListaAdmin extends Component {
                 
                 <div>
                     <header>
-                        <h2 className='titolo-1'><center>Benvenuti nel centro di controllo degli amministratori</center></h2>
+                        <h1 className='titolo-1'><center>Benvenuton nel centro di controllo degli gli agenti</center></h1>
                     </header>
                     <br />
                     <main>
-                        <h3>Vuoi inserire un nuovo amministratore ? <Link to="/admin/crudAdmin/CreateAdmin" > Clicca qui </Link></h3>
+                        <h3>Vuoi inserire una nuova dimora ? <Link to="/admin/crudAdmin/CreateAgente" > Clicca qui </Link></h3>
                         <br />
-                        <h3><strong>Tabella Amministratori</strong></h3>
+                        <h3 className='h3-tabella'><strong>Tabella Agenti Immobiliari</strong></h3>
                         <table className="table-lista">
                             <thead className="thead-dark">
                                 <tr>
                                 <th scope="col">ID</th>
                                 <th scope="col">NOME</th>
                                 <th scope="col">COGNOME</th>
-                                <th scope="col">DATA NASCITA</th>
-                                <th scope="col">CITTA'</th>
                                 <th scope="col">EMAIL</th>
-                                <th scope="col">PASSWORD</th>
-                                <th scope="col">DATA ISCRIZIONE</th>
+                                <th scope="col">NUMERO TEL.</th>
                                 <th scope="col">MODIFICA</th>
                                 <th scope="col">ELIMINA</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            {Array.isArray(this.state.admins) && this.state.admins.map(admin => (
-                                    <tr key={admin.Id_admin}>
-                                        <th scope="row">{admin.Id_admin}</th>
-                                        <td>{admin.Nome.charAt(0).toUpperCase() + admin.Nome.slice(1)}</td>
-                                        <td>{admin.Cognome.charAt(0).toUpperCase() + admin.Cognome.slice(1)}</td>
-                                        <td>{admin.DataNascita ? new Date(admin.DataNascita).toISOString().split('T')[0] : '-'}</td>
-                                        <td>{admin.Citta.charAt(0).toUpperCase() + admin.Citta.slice(1)}</td>
-                                        <td>{admin.Email}</td>
-                                        {/* cifrario di cesare */}
-                                        <td>{admin.Password.split('').map(char => String.fromCharCode(char.charCodeAt(0) + 1)).join('')}</td>
-                                        <td>{admin.Data_inscrizione ? new Date(admin.Data_inscrizione).toISOString().split('T')[0] : '-'}</td>
+                            {Array.isArray(this.state.agente) && this.state.agente.map(agent => (
+                                    <tr key={agent.Id_agente}>
+                                        <th scope="row">{agent.Id_agente}</th>
+                                        <td>{agent.Nome.charAt(0).toUpperCase() + agent.Nome.slice(1)}</td>
+                                        <td>{agent.Cognome.charAt(0).toUpperCase() + agent.Cognome.slice(1)}</td>
+                                        <td>{agent.Email}</td>
+                                        <td>{agent.Numero_cell}</td>
                                         <td><button>modifica</button></td>
                                         <td><button>elimina</button></td>
                                     </tr>
@@ -102,4 +95,4 @@ class ListaAdmin extends Component {
     }
 }
 
-export default ListaAdmin;
+export default ListaAgente;

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 function AdBar() {
     return (
         <>
-            <nav className="AdBar">
+            <nav className="navbar">
                 <div className="row-no-gutters">
                     <a className="AdBar-brand" href="https://realhome1.netlify.app/">
                         <img src={logo} alt="Logo" width="40" height="40" />
@@ -21,6 +21,15 @@ function AdBar() {
                             </li>
                             <li className="nav-item">
                                 <Link to="/admin/listaCase" className="btn btn-outline-primary"> Lista Case </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link to="/admin/listaAgente" className="btn btn-outline-primary"> Lista Agente </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link to="/admin/listaPropietario" className="btn btn-outline-primary"> Lista Propietario Casa </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link to="/admin/listaContatti" className="btn btn-outline-primary"> Tickets </Link>
                             </li>
                         </ul>
                     </div>

@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Offers from './components/Offers';
 import Footer from './components/Footer';
 import logoEsteso from './components/pic/logo.png';
+import UserProfile from './UserProfile';
 
 class RealHome extends Component {
     state = {
@@ -11,6 +12,7 @@ class RealHome extends Component {
             { id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home'}        
         ]
     }
+    
     render() {
         return (
             <>
@@ -20,6 +22,7 @@ class RealHome extends Component {
                     <h3>Alcune case speciali ...</h3>
                 </div>
                 <Offers />
+                {UserProfile.setName("generic")}
                 {this.state.footers.map(footer => (
                     <Footer
                         key={footer.id}

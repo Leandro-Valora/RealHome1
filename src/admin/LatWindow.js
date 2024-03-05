@@ -5,9 +5,9 @@ function LatWindow() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        UserProfile.setName = " ";
+        UserProfile.setName("logout");
         // Dopo il logout, reindirizzo l'utente alla pagina di login
-        navigate("/Login");
+        navigate("/");
     };
 
     return (

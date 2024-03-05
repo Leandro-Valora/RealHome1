@@ -104,10 +104,6 @@ img {
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-/* [type=button], [type=reset], [type=submit], button {
-    -webkit-appearance: button;
-} */
-
 button, input {
     overflow: visible;
 }

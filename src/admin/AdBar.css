@@ -159,3 +159,7 @@ button, input, optgroup, select, textarea {
 .search-inputs input {
     margin-right: 10px; /* Aggiunge spazio tra gli input */
 }
+
+.text-danger {
+    color: red;
+  }

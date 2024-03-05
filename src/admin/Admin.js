@@ -2,7 +2,6 @@ import React from 'react';
 import AdBar from '../admin/AdBar.js';
 import Footer from '../components/Footer';
 import UserProfile from '../UserProfile';
-//import "./Admin.css";
 import villa1 from "../ville/avi.jpg";
 import villa2 from "../ville/dinuka.jpg";
 import villa3 from "../ville/fern.jpg";
@@ -16,7 +15,7 @@ class Admin extends React.Component {
 
     componentDidMount() {
         const userName = UserProfile.getName();
-        if (!userName || userName.trim() === "") {
+        if (!userName || userName.trim() === "generic") {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         }
@@ -25,7 +24,6 @@ class Admin extends React.Component {
     render() {
         return (
             <>
-            <p>Prova1</p>
                 <AdBar />
                 <br />
                 <div>

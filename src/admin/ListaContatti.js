@@ -1,17 +1,14 @@
-import React, { Component } from 'react';
-import AdBar from './AdBar';
+import React from 'react';
+import AdBar from '../admin/AdBar.js';
 import Footer from '../components/Footer';
 import UserProfile from '../UserProfile';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import "./StileTabella.css";
 
-class ListaUser extends Component {
+class ListaContatti extends React.Component {
     state = {
         footers: [
             { id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home'}        
-        ],
-        users: {}
+        ]
     }
 
     componentDidMount() {
@@ -21,22 +18,22 @@ class ListaUser extends Component {
             window.location.href = "/";
         } else {
             // Effettua la chiamata al backend per ottenere gli amministratori
-            axios.post('http://localhost:8081/admin/listaUser')
+            axios.post('http://localhost:8081/info/recive-email')
             .then(response => {
                 if(response.data.status === "Success") {
                     // Aggiorna lo stato con i dati degli amministratori ottenuti dal backend
-                    if (Array.isArray(response.data.users)) {
-                        this.setState({ users: response.data.users });
+                    if (Array.isArray(response.data.messages)) {
+                        this.setState({ messages: response.data.messages });
                       } else {
-                        console.log("users data is not an array");
+                        console.log("Contatti data is not an array");
                       }
                       
                 } else {
-                    console.log("Failed to fetch users");
+                    console.log("Failed to fetch contatti");
                 }
             })
             .catch(error => {
-                console.log("Error fetching users:", error);
+                console.log("Error fetching contatti:", error);
             });
         }
     }
@@ -45,39 +42,30 @@ class ListaUser extends Component {
         return (
             <>
                 <AdBar />
-                <br />     
-                {/* QUI CODICE per pagina specifica  */}
-                
+                <br />
                 <div>
                     <header>
-                        <h1 className='titolo-1'><center>Modifica i campi dell'utente</center></h1>
+                        <h1 className='titolo-1'><center>Benvenuti nei messaggi arrivati dal forum contatti di Real-Home</center></h1>
                     </header>
                     <br />
                     <main>
-                        <h3>Vuoi inserire un nuovo Utente ? <Link to="/admin/crudAdmin/CreateUser" > Clicca qui </Link></h3>
-                        <br />
-                        <h3><strong>Tabella Utenti</strong></h3>
+                        <h3><strong>Tabella Messaggi </strong></h3>
                         <table className="table-lista">
                             <thead className="thead-dark">
                                 <tr>
                                 <th scope="col">ID</th>
                                 <th scope="col">NOME</th>
                                 <th scope="col">EMAIL</th>
-                                <th scope="col">PASSWORD</th>
-                                <th scope="col">MODIFICA</th>
-                                <th scope="col">ELIMINA</th>
+                                <th scope="col">Messaggio</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            
-                            {Array.isArray(this.state.users) && this.state.users.map(user => (
-                                    <tr key={user.Id_signup}>
-                                        <th scope="row">{user.Id_signup}</th>
-                                        <td>{user.Name.charAt(0).toUpperCase() + user.Name.slice(1)}</td>
-                                        <td>{user.Email}</td>
-                                        <td>{user.Password.split('').map(char => String.fromCharCode(char.charCodeAt(0) + 1)).join('')}</td>
-                                        <td><Link to={{ pathname: '/admin/crudAdmin/modificaUser', state: { users: user } }}><button>modifica</button></Link></td>
-                                        <td><button>elimina</button></td>
+                            {Array.isArray(this.state.messages) && this.state.messages.map(contatto => (
+                                    <tr key={contatto.Id_contatto}>
+                                        <th scope="row">{contatto.Id_contatto}</th>
+                                        <td>{contatto.Nome.charAt(0).toUpperCase() + contatto.Nome.slice(1)}</td>
+                                        <td>{contatto.Email}</td>
+                                        <td>{contatto.Messaggio}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -95,4 +83,4 @@ class ListaUser extends Component {
     }
 }
 
-export default ListaUser;
+export default ListaContatti;

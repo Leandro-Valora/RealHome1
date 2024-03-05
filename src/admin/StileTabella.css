@@ -1,0 +1,35 @@
+/* tabella.css */
+
+.table-lista {
+  width: 78%;
+  border-collapse: collapse;
+  margin-left: 2%;
+}
+.h3-tabella {
+  margin-left: 2%;
+}
+.table-lista th,
+.table-lista td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table-lista thead th {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.table-lista tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table-lista th:first-child,
+.table-lista td:first-child {
+  padding-left: 16px;
+}
+
+.table-lista th:last-child,
+.table-lista td:last-child {
+  padding-right: 16px;
+}

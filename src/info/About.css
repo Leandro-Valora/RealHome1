@@ -1,0 +1,25 @@
+.image-header-container {
+    display: flex; /* Utilizziamo flexbox per creare il layout */
+    align-items: center; /* Allineamento verticale al centro */
+}
+
+.luxury-real-estate-img {
+    width: 350px; /* Regola la larghezza dell'immagine */
+    height: auto; /* Imposta l'altezza in modo che l'immagine si ridimensioni proporzionalmente */
+    margin-left: 1%;
+    margin-top: 1%;
+}
+
+.about-txt {
+    display: flex; /* Utilizza flexbox per il layout */
+    align-items: center; /* Allinea verticalmente il contenuto al centro */
+    font-family: Arial, sans-serif;
+}
+
+.about-txt-right {
+    flex: 1; /* Flessibilità del testo per occupare lo spazio rimanente */
+    text-align: left;
+    margin-left: 1%;
+    margin-right: 3%;
+    
+}
