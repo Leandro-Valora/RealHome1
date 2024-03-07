@@ -10,7 +10,8 @@ class ListaCase extends Component {
     state = {
         footers: [
             { id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home'}        
-        ]
+        ],
+        houseToDelete: null
     }
 
     componentDidMount() {
@@ -40,13 +41,45 @@ class ListaCase extends Component {
         }
     }
 
+    handleDeleteHouse = (casa) => {
+        this.setState({ houseToDelete: casa });
+    }
+
+    confirmDeleteCasa = () => {
+        const casaId = this.state.houseToDelete.Id_casa;
+        axios.post('http://localhost:8081/admin/CasaDelete', { Id_casa: casaId })
+            .then(resp => {
+                if (resp.data.status === "Success") {
+                    // Richiama la funzione per ottenere la lista aggiornata degli utenti
+                    axios.post('http://localhost:8081/admin/listaCase')
+                        .then(response => {
+                            if(response.data.status === "Success") {
+                                if (Array.isArray(response.data.case)) {
+                                    this.setState({ case: response.data.case, houseToDelete: null });
+                                } else {
+                                    console.log("case data is not an array");
+                                }
+                            } else {
+                                console.log("Failed to fetch case");
+                            }
+                        })
+                        .catch(error => {
+                            console.log("Error fetching case:", error);
+                        });
+                } else {
+                    console.log("Failed to delete case");
+                }
+            })
+            .catch(error => {
+                console.log("Error deleting case:", error);
+            });
+    }
+
     render() {
         return (
             <>
                 <AdBar />
-                <br />     
-                {/* QUI CODICE per pagina specifica  */}
-                
+                <br />
                 <div>
                     <header>
                         <h1 className='titolo-1'><center>Benvenuti nel centro di controllo per le case</center></h1>
@@ -55,7 +88,7 @@ class ListaCase extends Component {
                     <main>
                         <h3>Vuoi inserire una nuova dimora ? <Link to="/admin/crudAdmin/CreateCasa" > Clicca qui </Link></h3>
                         <br />
-                        <h3 className='h3-tabella'><strong>Tabella Utenti</strong></h3>
+                        <h3 className='h3-tabella'><strong>Tabella Case</strong></h3>
                         <table className="table-lista">
                             <thead className="thead-dark">
                                 <tr>
@@ -67,6 +100,7 @@ class ListaCase extends Component {
                                 <th scope="col">VIA</th>
                                 <th scope="col">PREZZO</th>
                                 <th scope="col">DESCRIZIONE</th>
+                                <th scope="col">MODIFICA</th>
                                 <th scope="col">ELIMINA</th>
                                 </tr>
                             </thead>
@@ -81,14 +115,29 @@ class ListaCase extends Component {
                                         <td>{casa.Via}</td>
                                         <td>{casa.Prezzo}</td>
                                         <td>{casa.Descrizione}</td>
-                                        <td><button>elimina</button></td>
+                                        <td> 
+                                            <Link to={`/admin/crudAdmin/modificaCasa?casaId=${casa.Id_casa}`}><button>Modifica</button></Link>
+                                        </td>
+                                        <td>
+                                            <button onClick={() => this.handleDeleteHouse(casa)}>Elimina</button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </main>
                 </div>
-                {/* FINE */}
+
+                {this.state.houseToDelete && (
+                    <div className="popup">
+                        <div className="popup-inner">
+                            <p>Sei sicuro di voler eliminare la casa ?</p>
+                            <button onClick={this.confirmDeleteCasa}>Conferma</button>
+                            <button onClick={() => this.setState({ houseToDelete: null })}>Annulla</button>
+                        </div>
+                    </div>
+                )}
+                
                 {this.state.footers.map(footer => (
                     <Footer
                         key={footer.id}

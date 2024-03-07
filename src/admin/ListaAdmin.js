@@ -10,7 +10,8 @@ class ListaAdmin extends Component {
     state = {
         footers: [
             { id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home'}        
-        ]
+        ],
+        adminToDelete: null
     }
 
     componentDidMount() {
@@ -39,14 +40,46 @@ class ListaAdmin extends Component {
             });
         }
     }
+
+    handleDeleteAdmin = (admin) => {
+        this.setState({ adminToDelete: admin });
+    }
+
+    confirmDeleteAdmin = () => {
+        const adminId = this.state.adminToDelete.Id_admin;
+        axios.post('http://localhost:8081/admin/AdminDelete', { Id_admin: adminId })
+            .then(resp => {
+                if (resp.data.status === "Success") {
+                    // Richiama la funzione per ottenere la lista aggiornata degli utenti
+                    axios.post('http://localhost:8081/admin/listaAdmin')
+                        .then(response => {
+                            if(response.data.status === "Success") {
+                                if (Array.isArray(response.data.admins)) {
+                                    this.setState({ admins: response.data.admins, adminToDelete: null });
+                                } else {
+                                    console.log("admins data is not an array");
+                                }
+                            } else {
+                                console.log("Failed to fetch admins");
+                            }
+                        })
+                        .catch(error => {
+                            console.log("Error fetching admins:", error);
+                        });
+                } else {
+                    console.log("Failed to delete admins");
+                }
+            })
+            .catch(error => {
+                console.log("Error deleting admins:", error);
+            });
+    }
     
     render() {
         return (
             <>
                 <AdBar />
-                <br />     
-                {/* QUI CODICE per pagina specifica  */}
-                
+                <br />
                 <div>
                     <header>
                         <h2 className='titolo-1'><center>Benvenuti nel centro di controllo degli amministratori</center></h2>
@@ -83,15 +116,29 @@ class ListaAdmin extends Component {
                                         {/* cifrario di cesare */}
                                         <td>{admin.Password.split('').map(char => String.fromCharCode(char.charCodeAt(0) + 1)).join('')}</td>
                                         <td>{admin.Data_inscrizione ? new Date(admin.Data_inscrizione).toISOString().split('T')[0] : '-'}</td>
-                                        <td><button>modifica</button></td>
-                                        <td><button>elimina</button></td>
+                                        <td> 
+                                            <Link to={`/admin/crudAdmin/modificaAdmin?adminId=${admin.Id_admin}`}><button>Modifica</button></Link>
+                                        </td>
+                                        <td>
+                                            <button onClick={() => this.handleDeleteAdmin(admin)}>Elimina</button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </main>
                 </div>
-                {/* FINE */}
+
+                {this.state.adminToDelete && (
+                    <div className="popup">
+                        <div className="popup-inner">
+                            <p>Sei sicuro di voler eliminare l' amministratore ?</p>
+                            <button onClick={this.confirmDeleteAdmin}>Conferma</button>
+                            <button onClick={() => this.setState({ adminToDelete: null })}>Annulla</button>
+                        </div>
+                    </div>
+                )}
+
                 {this.state.footers.map(footer => (
                     <Footer
                         key={footer.id}

@@ -1,0 +1,8 @@
+.price-input-container {
+    display: flex;
+    align-items: center;
+}
+
+.currencyinput {
+    margin-right: 5px;
+}

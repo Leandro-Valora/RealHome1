@@ -45,7 +45,7 @@ class ListaContatti extends React.Component {
                 <br />
                 <div>
                     <header>
-                        <h1 className='titolo-1'><center>Benvenuti nei messaggi arrivati dal forum contatti di Real-Home</center></h1>
+                        <h1 className='titolo-1'><center>Messaggi arrivati dal forum contatti </center></h1>
                     </header>
                     <br />
                     <main>
@@ -56,6 +56,7 @@ class ListaContatti extends React.Component {
                                 <th scope="col">ID</th>
                                 <th scope="col">NOME</th>
                                 <th scope="col">EMAIL</th>
+                                <th scope="col">DATA INVIO</th>
                                 <th scope="col">Messaggio</th>
                                 </tr>
                             </thead>
@@ -65,6 +66,8 @@ class ListaContatti extends React.Component {
                                         <th scope="row">{contatto.Id_contatto}</th>
                                         <td>{contatto.Nome.charAt(0).toUpperCase() + contatto.Nome.slice(1)}</td>
                                         <td>{contatto.Email}</td>
+                                        <td>{new Date(contatto.Data_messaggio).toLocaleString('it-IT', {year:'numeric', month:'2-digit', day:'2-digit', 
+                                        hour:'2-digit', minute:'2-digit', timeZone:'UTC'})}</td>
                                         <td>{contatto.Messaggio}</td>
                                     </tr>
                                 ))}

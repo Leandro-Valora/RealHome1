@@ -6,19 +6,21 @@ import UserProfile from '../../UserProfile';
 import axios from 'axios';
 import "../StileTabella.css";
 
-function ModificaUser() {
+function ModificaAgente() {
     const location = useLocation();
-    const [userDet, setUsers] = React.useState({
-        Name: '',
+    const [agentDet, setAgent] = React.useState({
+        Nome: '',
+        Cognome: '',
         Email: '',
-        Password: '',
-        Id_signup:''
+        Numero_cell: '',
+        Id_agente:''
     });
     const [successMessage, setSuccessMessage] = React.useState('');
     const [errors] = React.useState({
         nome: '',
         email: '',
-        password: ''
+        cognome: '',
+        numero_cell: ''
     });
 
     React.useEffect(() => {
@@ -28,16 +30,16 @@ function ModificaUser() {
             window.location.href = "/";
         } else {
             const searchParams = new URLSearchParams(location.search);
-            const userId = searchParams.get('userId');
-            if (userId) {
+            const agenteId = searchParams.get('agenteId');
+            if (agenteId) {
                 //dettagli dell'utente utilizzando l'ID recuperato dall'URL
-                axios.get('http://localhost:8081/admin/getUserDetails', {
+                axios.get('http://localhost:8081/admin/getAgenteDetails', {
                     params: {
-                        userId: userId
+                        agenteId: agenteId
                     }
                 }).then(response => {
                     if(response.data.status === "Success") {
-                        setUsers(response.data.userDetails[0]);
+                        setAgent(response.data.agenteDetails[0]);
                     } else {
                         console.log("Failed to fetch user details");
                     }
@@ -56,24 +58,24 @@ function ModificaUser() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if (!Object.values(userDet).some(value => value === "")) {
-            axios.post('http://localhost:8081/admin/crudAdmin/modificaUser', userDet)
+        if (!Object.values(agentDet).some(value => value === "")) {
+            axios.post('http://localhost:8081/admin/crudAdmin/modificaAgente', agentDet)
             .then(response => {
                 if(response.data.status === "Success") {
-                    setSuccessMessage("Utente modificato con successo!");
+                    setSuccessMessage("Agente modificato con successo!");
                 } else {
-                    console.log("Failed to update user");
+                    console.log("Failed to update agent");
                 }
             })
             .catch(error => {
-                console.log("Error updating user:", error);
+                console.log("Error updating agent:", error);
             });
         }
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUsers(prevUserDet => ({
+        setAgent(prevUserDet => ({
             ...prevUserDet,
             [name]: value
         }));
@@ -86,7 +88,7 @@ function ModificaUser() {
             <br />
             <div>
                 <header>
-                    <h1 className='titolo-1'><center>Modifica i campi dell'utente</center></h1>
+                    <h1 className='titolo-1'><center>Modifica i campi degli Agenti Immobili</center></h1>
                 </header>
                 <br />
                 <main>
@@ -100,12 +102,38 @@ function ModificaUser() {
                                     </label>
                                     <input
                                         type="text"
-                                        name="Name"
-                                        value={userDet.Name || ''}
+                                        name="Nome"
+                                        value={agentDet.Nome || ''}
                                         onChange={handleChange}
                                         className="form-control rounded-0"
                                     />
                                     {errors.nome && <span className="text-danger">{errors.nome}</span>}
+                                </div>
+                                <div className="login-form-group">
+                                    <label htmlFor="cognome">
+                                        <strong>Cognome</strong>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="Cognome"
+                                        value={agentDet.Cognome || ''}
+                                        onChange={handleChange}
+                                        className="form-control rounded-0"
+                                    />
+                                    {errors.cognome && <span className="text-danger">{errors.cognome}</span>}
+                                </div>
+                                <div className="login-form-group">
+                                    <label htmlFor="numero_cell">
+                                        <strong>Numero telefonico</strong>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="Numero_cell"
+                                        value={agentDet.Numero_cell || ''}
+                                        onChange={handleChange}
+                                        className="form-control rounded-0"
+                                    />
+                                    {errors.numero_cell && <span className="text-danger">{errors.numero_cell}</span>}
                                 </div>
                                 <div className="login-form-group">
                                     <label htmlFor="email">
@@ -114,27 +142,13 @@ function ModificaUser() {
                                     <input
                                         type="email"
                                         name="Email"
-                                        value={userDet.Email || ''}
+                                        value={agentDet.Email || ''}
                                         onChange={handleChange}
                                         className="form-control rounded-0"
                                     />
                                     {errors.email && <span className="text-danger">{errors.email}</span>}
                                 </div>
-                                <div className="login-form-group">
-                                    <label htmlFor="password">
-                                        <strong>Password</strong>
-                                    </label>
-                                    <input
-                                        type="password"
-                                        name="Password"
-                                        id="password"
-                                        value={userDet.Password || ''}
-                                        onChange={handleChange}
-                                        className="form-control rounded-0"
-                                    />
-                                    {errors.password && <span className="text-danger">{errors.password}</span>}
-                                </div>
-                                <button type="submit" className="login-btn btn btn-success"> Modifica </button>
+                                <button type="submit" className="login-btn btn btn-success"> Aggiungi </button>
                             </form>
                         </div>
                     </div>
@@ -145,4 +159,4 @@ function ModificaUser() {
     );
 }
 
-export default ModificaUser;
+export default ModificaAgente;

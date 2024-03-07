@@ -20,6 +20,11 @@ import CreateCasa from './admin/crudAdmin/CreateCasa';
 import CreateAgente from './admin/crudAdmin/CreateAgente';
 import CreatePropierario from './admin/crudAdmin/CreatePropietario';
 import ModificaUser from './admin/crudAdmin/ModificaUser';
+import ModificaPropietario from './admin/crudAdmin/ModificaPropietario';
+import ModificaAgente from './admin/crudAdmin/ModificaAgente';
+import ModificaAdmin from './admin/crudAdmin/ModificaAdmin';
+import ModificaCasa from './admin/crudAdmin/ModificaCasa';
+
 
 function App() {
   return (
@@ -46,8 +51,12 @@ function App() {
         <Route path='/admin/crudAdmin/createAgente' element={<CreateAgente />} />
         <Route path='/admin/crudAdmin/createPropierario' element={<CreatePropierario />} />
         <Route path='/admin/crudAdmin/modificaUser' element={<ModificaUser />} />
-
-      </Routes>
+        <Route path='/admin/crudAdmin/modificaPropietario' element={<ModificaPropietario />} />
+        <Route path='/admin/crudAdmin/modificaAgente' element={<ModificaAgente />} />
+        <Route path='/admin/crudAdmin/modificaAdmin' element={<ModificaAdmin />} />
+        <Route path='/admin/crudAdmin/modificaCasa' element={<ModificaCasa />} />
+        
+      </Routes> 
     </BrowserRouter>
   );
 }

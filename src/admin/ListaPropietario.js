@@ -10,7 +10,8 @@ class ListaPropietario extends Component {
     state = {
         footers: [
             { id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home'}        
-        ]
+        ],
+        ownerToDelete: null
     }
 
     componentDidMount() {
@@ -40,20 +41,52 @@ class ListaPropietario extends Component {
         }
     }
 
+    handleDeletePropietario = (owner) => {
+        this.setState({ ownerToDelete: owner });
+    }
+
+    confirmDeletePropietario = () => {
+        const ownerId = this.state.ownerToDelete.Id_propietario;
+        axios.post('http://localhost:8081/admin/PropietarioDelete', { Id_propietario: ownerId })
+            .then(resp => {
+                if (resp.data.status === "Success") {
+                    //aggiorno elementi tabella
+                    axios.post('http://localhost:8081/admin/listaPropietario')
+                        .then(response => {
+                            if(response.data.status === "Success") {
+                                if (Array.isArray(response.data.propietario)) {
+                                    this.setState({ propietario: response.data.propietario, ownerToDelete: null });
+                                } else {
+                                    console.log("propietario data is not an array");
+                                }
+                            } else {
+                                console.log("Failed to fetch propietario");
+                            }
+                        })
+                        .catch(error => {
+                            console.log("Error fetching propietario:", error);
+                        });
+                } else {
+                    console.log("Failed to delete propietario");
+                }
+            })
+            .catch(error => {
+                console.log("Error deleting propietario:", error);
+            });
+    }
+
     render() {
         return (
             <>
                 <AdBar />
-                <br />     
-                {/* QUI CODICE per pagina specifica  */}
-                
+                <br />                   
                 <div>
                     <header>
                         <h1 className='titolo-1'><center>Benvenuton nel centro di controllo dei propietari di Immobili</center></h1>
                     </header>
                     <br />
                     <main>
-                        <h3>Vuoi inserire una nuova dimora ? <Link to="/admin/crudAdmin/CreatePropierario" > Clicca qui </Link></h3>
+                        <h3>Vuoi inserire una nuovo propietario ? <Link to="/admin/crudAdmin/CreatePropierario" > Clicca qui </Link></h3>
                         <br />
                         <h3 className='h3-tabella'><strong>Tabella Propietari Immobiliari</strong></h3>
                         <table className="table-lista">
@@ -76,15 +109,29 @@ class ListaPropietario extends Component {
                                         <td>{prop.Cognome.charAt(0).toUpperCase() + prop.Cognome.slice(1)}</td>
                                         <td>{prop.Email}</td>
                                         <td>{prop.Numero_cell}</td>
-                                        <td><button>modifica</button></td>
-                                        <td><button>elimina</button></td>
+                                        <td> 
+                                            <Link to={`/admin/crudAdmin/modificaPropietario?userProp=${prop.Id_propietario}`}><button>Modifica Propietario</button></Link>
+                                        </td>
+                                        <td>
+                                            <button onClick={() => this.handleDeletePropietario(prop)}>Elimina</button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </main>
                 </div>
-                {/* FINE */}
+
+                {this.state.ownerToDelete && (
+                    <div className="popup">
+                        <div className="popup-inner">
+                            <p>Sei sicuro di voler eliminare il propietario?</p>
+                            <button onClick={this.confirmDeletePropietario}>Conferma</button>
+                            <button onClick={() => this.setState({ ownerToDelete: null })}>Annulla</button>
+                        </div>
+                    </div>
+                )}
+
                 {this.state.footers.map(footer => (
                     <Footer
                         key={footer.id}

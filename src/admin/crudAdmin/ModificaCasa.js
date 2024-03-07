@@ -1,54 +1,51 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
 import UserProfile from '../../UserProfile';
-import CasaValidation from '../../CasaValidation';
 import axios from 'axios';
-import './Stile.css';
+import "../StileTabella.css";
 
-class CreateCasa extends Component {
-    state = {
-        footers: [
-            { id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home'}        
-        ],
-        values: {
-            owner: '',
-            agente: '',
-            paese: '',
-            citta: '',
-            via: '',
-            prezzo: '',
-            descrizione: ''
-        },
-        errors: {
-            proprietario: '',
-            agente: '',
-            paese: '',
-            citta: '',
-            via: '',
-            prezzo: '',
-            descrizione: ''
-        },
-        successMessage: '',
-        showMessage: false,
-        proprietari: [],
-        agenti: []
-    }
+function ModificaCasa() {
+    const location = useLocation();
+    const [casaDet, setCase] = React.useState({
+        PropietarioIm: '',
+        AgenteImm: '',
+        Paese: '',
+        Citta: '',
+        Via: '',
+        Prezzo: '',
+        Descrizione: ''
+    });
+    const [successMessage, setSuccessMessage] = React.useState('');
+    const [errors] = React.useState({
+        proprietario: '',
+        agente: '',
+        paese: '',
+        citta: '',
+        via: '',
+        prezzo: '',
+        descrizione: ''
+    });
 
-    componentDidMount() {
+    // Definisci lo stato per proprietari e agenti
+    const [proprietari, setProprietari] = React.useState([]);
+    const [agenti, setAgenti] = React.useState([]);
+
+    React.useEffect(() => {
         const userName = UserProfile.getName();
         if (!userName || userName.trim() === "generic") {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
-        }
-        else {
+        } else {
+            //codice per recuperare le info delle ddl
             axios.post('http://localhost:8081/admin/listaPropietario')
             .then(response => {
                 if(response.data.status === "Success") {
                     const proprietari = response.data.propietario;
                     // Aggiorna lo stato con i dati dei proprietari
                     if(Array.isArray(proprietari)) {
-                        this.setState({ proprietari });
+                        setProprietari(proprietari); // Modifica qui
                     } else {
                         console.log("Dati proprietario non validi:", proprietari);
                     }
@@ -67,7 +64,7 @@ class CreateCasa extends Component {
                     const agenti = resp.data.agente;
                     // Aggiorna lo stato con i dati dei agenti
                     if(Array.isArray(agenti)) {
-                        this.setState({ agenti });
+                        setAgenti(agenti); // Modifica qui
                     } else {
                         console.log("Dati agente non validi:", agenti);
                     }
@@ -78,87 +75,107 @@ class CreateCasa extends Component {
             .catch(error => {
                 console.log("Error fetching agenti:", error);
             });
-        }
-    }    
-    
-    handleSubmit = (event) => {
-        event.preventDefault();
-        const CasaValidationErrors = CasaValidation(this.state.values);
-        this.setState({ errors: CasaValidationErrors });
-        
-        if (!Object.values(CasaValidationErrors).some(error => error !== "") && !Object.values(this.state.values).some(value => value === "")) {
-            axios.post('http://localhost:8081/admin/crudAdmin/createCasa', this.state.values)
-                .then(response => {
+
+            //set di codice utile alle funzioni di questa pagina
+            const searchParams = new URLSearchParams(location.search);
+            const casaId = searchParams.get('casaId');
+            if (casaId) {
+                //dettagli dell'utente utilizzando l'ID recuperato dall'URL
+                axios.get('http://localhost:8081/admin/getCasaDetails', {
+                    params: {
+                        houseId: casaId
+                    }
+                }).then(response => {
                     if(response.data.status === "Success") {
-                        this.setState({ 
-                            successMessage: "Casa creata con successo!",
-                            showMessage: true
-                        });
+                        setCase(response.data.casaDetails[0]);
                     } else {
-                        console.log("Failed to fetch casa");
+                        console.log("Failed to fetch user details");
                     }
                 })
                 .catch(error => {
-                    console.log("Error fetching case:", error);
+                    console.log("Error fetching user details:", error);
                 });
+            } else {
+                console.log("User ID not found in URL");
+            }
+        }
+    }, [location]);
+    
+    
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        if (!Object.values(casaDet).some(value => value === "")) {
+            axios.post('http://localhost:8081/admin/crudAdmin/modificaCasa', casaDet)
+            .then(response => {
+                if(response.data.status === "Success") {
+                    setSuccessMessage("Casa modificato con successo!");
+                } else {
+                    console.log("Failed to update casa");
+                }
+            })
+            .catch(error => {
+                console.log("Error updating casa:", error);
+            });
         }
     };
 
-    handleInput = (event) => {
-        const { name, value } = event.target;
-        this.setState(prevState => ({
-            values: {
-                ...prevState.values,
-                [name]: value
-            }
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setCase(prevHouseDet => ({
+            ...prevHouseDet,
+            [name]: value
         }));
     };
+    
 
-    render() {
-        const { successMessage, showMessage, errors } = this.state;
-        const { handleInput, handleSubmit } = this;
-        return (
-            <>
-                <AdBar />
-                <br />                     
-                <div>
-                    <header>
-                        <h2 className='titolo-1'><center>Crea un nuovo inserimento di Casa</center></h2>
-                    </header>
-                    <br />
-                    <main>
-                        <div className="login-form-container">
-                            <div className="login-form">
-                                <p>{showMessage && <span className="text-success">{successMessage}</span>}</p>
-                                <form onSubmit={handleSubmit}>
+    return (
+        <>
+            <AdBar />
+            <br />
+            <div>
+                <header>
+                    <h1 className='titolo-1'><center>Modifica i campi dell'Immobile</center></h1>
+                </header>
+                <br />
+                <main>
+                    <div className="login-form-container">
+                        <div className="login-form">
+                            <p>{successMessage && <span className="text-success">{successMessage}</span>}</p>
+                            <form onSubmit={handleSubmit}>
                                     <div className="login-form-group">
-                                        <label htmlFor="owner">
+                                        <label htmlFor="PropietarioIm">
                                             <strong>Propietario</strong>
                                         </label>
                                         <select
-                                            name="owner"
-                                            onChange={handleInput}
+                                            name="PropietarioIm"
+                                            value={casaDet.PropietarioIm}
+                                            onChange={handleChange}
                                             className="form-control rounded-0"
                                         >
-                                            <option value="">Seleziona propietario Immbile</option>
-                                            {this.state.proprietari && this.state.proprietari.map(prop => (
-                                                <option key={prop.Id_propietario} value={prop.Id_propietario}>{prop.Nome.charAt(0).toUpperCase() + prop.Nome.slice(1)} {prop.Cognome.charAt(0).toUpperCase() + prop.Cognome.slice(1)}</option>
+                                            {proprietari.map(prop => (
+                                                <option key={prop.Id_propietario} value={prop.Id_propietario}>
+                                                    {prop.Nome.charAt(0).toUpperCase() + prop.Nome.slice(1)} {prop.Cognome.charAt(0).toUpperCase() + prop.Cognome.slice(1)}
+                                                </option>
                                             ))}
                                         </select>
                                         {errors.proprietario && <span className="text-danger">{errors.proprietario}</span>}
                                     </div>
                                     <div className="login-form-group">
-                                        <label htmlFor="agente">
+                                        <label htmlFor="AgenteImm">
                                             <strong>Agente</strong>
                                         </label>
                                         <select
-                                            name="agente"
-                                            onChange={handleInput}
+                                            name="AgenteImm"
+                                            value={casaDet.AgenteImm}
+                                            onChange={handleChange}
                                             className="form-control rounded-0"
                                         >
-                                            <option value="">Seleziona agente Immobiliare</option>
-                                            {this.state.agenti && this.state.agenti.map(agImm => (
-                                                <option key={agImm.Id_agente} value={agImm.Id_agente}>{agImm.Nome.charAt(0).toUpperCase() + agImm.Nome.slice(1)} {agImm.Cognome.charAt(0).toUpperCase() + agImm.Cognome.slice(1)}</option>
+                                            {agenti.map(agImm => (
+                                                <option key={agImm.Id_agente} value={agImm.Id_agente}>
+                                                    {agImm.Nome.charAt(0).toUpperCase() + agImm.Nome.slice(1)} {agImm.Cognome.charAt(0).toUpperCase() + agImm.Cognome.slice(1)}
+                                                </option>
                                             ))}
                                         </select>
                                         {errors.agente && <span className="text-danger">{errors.agente}</span>}
@@ -169,9 +186,9 @@ class CreateCasa extends Component {
                                         </label>
                                         <input
                                             type="text"
-                                            name="paese"
-                                            placeholder="Inserisci paese"
-                                            onChange={handleInput}
+                                            name="Paese"
+                                            value={casaDet.Paese || ''}
+                                            onChange={handleChange}
                                             className="form-control rounded-0"
                                         />
                                         {errors.paese && <span className="text-danger">{errors.paese}</span>}
@@ -182,9 +199,9 @@ class CreateCasa extends Component {
                                         </label>
                                         <input
                                             type="text"
-                                            name="citta"
-                                            placeholder="Inserisci città"
-                                            onChange={handleInput}
+                                            name="Citta"
+                                            value={casaDet.Citta || ''}
+                                            onChange={handleChange}
                                             className="form-control rounded-0"
                                         />
                                         {errors.citta && <span className="text-danger">{errors.citta}</span>}
@@ -195,9 +212,9 @@ class CreateCasa extends Component {
                                         </label>
                                         <input
                                             type="text"
-                                            name="via"
-                                            placeholder="Inserisci via"
-                                            onChange={handleInput}
+                                            name="Via"
+                                            value={casaDet.Via || ''}
+                                            onChange={handleChange}
                                             className="form-control rounded-0"
                                         />
                                         {errors.via && <span className="text-danger">{errors.via}</span>}
@@ -210,9 +227,9 @@ class CreateCasa extends Component {
                                             <span className="currencyinput">€</span>
                                             <input
                                                 type="text"
-                                                name="prezzo"
-                                                placeholder="Inserisci prezzo"
-                                                onChange={handleInput}
+                                                name="Prezzo"
+                                                value={casaDet.Prezzo || ''}
+                                                onChange={handleChange}
                                                 className="form-control rounded-0"
                                             />
                                         </div>
@@ -223,28 +240,22 @@ class CreateCasa extends Component {
                                             <strong>Descrizione</strong>
                                         </label>
                                         <textarea
-                                            name="descrizione"
-                                            placeholder="Inserisci descrizione"
-                                            onChange={handleInput}
+                                            name="Descrizione"
+                                            value={casaDet.Descrizione || ''}
+                                            onChange={handleChange}
                                             className="form-control rounded-0"
                                         ></textarea>
                                         {errors.descrizione && <span className="text-danger">{errors.descrizione}</span>}
                                     </div>
                                     <button type="submit" className="login-btn btn btn-success"> Create </button>
                                 </form>
-                            </div>
                         </div>
-                    </main>
-                </div>
-
-                {this.state.footers.map(footer => (
-                    <Footer
-                        key={footer.id}
-                        footer={footer} />
-                ))}
-            </>
-        );
-    }
+                    </div>
+                </main>
+            </div>
+            <Footer footer={{ id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home'}} />
+        </>
+    );
 }
 
-export default CreateCasa;
+export default ModificaCasa;
