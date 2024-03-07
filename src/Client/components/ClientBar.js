@@ -1,9 +1,9 @@
-import logo from '../components/pic/logo-sm.png';
-import './AdBar.css';
-import LatWindow from './LatWindow';
+import logo from '../../components/pic/logo-sm.png';
+import LatClientWindow from './LatClientWindow';
 import { Link } from 'react-router-dom';
+import '../../admin/AdBar.css';
 
-function AdBar() {
+function ClientBar() {
     return (
         <>
             <nav className="navbar">
@@ -14,22 +14,13 @@ function AdBar() {
                     <div className="header-1">
                         <ul className="nav nav-tabs">
                             <li className="nav-item">
-                                <Link to="/admin/listaAdmin" className="btn btn-outline-primary"> Lista Admin </Link>
+                                <Link to="/Client/homeClient" className="btn btn-outline-primary"> Home </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/admin/listaUser" className="btn btn-outline-primary"> Lista User </Link>
+                                <Link to="/info/about" className="btn btn-outline-primary"> About </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/admin/listaCase" className="btn btn-outline-primary"> Lista Case </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link to="/admin/listaAgente" className="btn btn-outline-primary"> Lista Agente </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link to="/admin/listaPropietario" className="btn btn-outline-primary"> Lista Propietario Casa </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link to="/admin/listaContatti" className="btn btn-outline-primary"> Tickets </Link>
+                                <Link to="/info/contatti" className="btn btn-outline-primary"> Contatti </Link>
                             </li>
                         </ul>
                     </div>
@@ -48,9 +39,9 @@ function AdBar() {
                     </div>      
                 </div>
             </nav>
-            <LatWindow />
+            <LatClientWindow />
         </>
     );
 }
 
-export default AdBar;
+export default ClientBar;

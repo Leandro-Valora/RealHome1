@@ -19,7 +19,7 @@ class RealHome extends Component {
                 <Navbar />
                 <div className="image-header-container">
                     <img src={logoEsteso} className="logo-esteso" alt="Logo Esteso" />
-                    <h3>Alcune case speciali ...</h3>
+                    <h3 className='subtitle'>Alcune case speciali ...</h3>
                 </div>
                 <Offers />
                 {UserProfile.setName("generic")}

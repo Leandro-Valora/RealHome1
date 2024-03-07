@@ -14,7 +14,7 @@ function Navbar() {
                         <ul className="nav nav-tabs">
                             <li className="nav-item">
                                 <button className="btn btn-outline-primary" data-bs-toggle="arrivi" data-bs-target="#ok" aria-current="page">
-                                    <Link to="/">Home</Link>
+                                    <Link to="/Client/homeClient">Home</Link>
                                 </button>
                             </li>
                             <li className="nav-item">

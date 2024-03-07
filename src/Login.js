@@ -46,12 +46,12 @@ function Login() {
                     const nameUser = res.data.name;
                     UserProfile.setName(nameUser);
                     if(res.data.type === "Admin") {
-                        UserProfile.setType("Admin");
                         navigate("/admin/Admin");
                     }
                     else {
-                        UserProfile.setType("User");
-                        navigate("/RealHome");
+                        const idUser = res.data.Id_signup;
+                        UserProfile.setId(idUser);
+                        navigate("/Client/homeClient");
                     }
                 } else {
                     console.log("Riprova ancora dai...");

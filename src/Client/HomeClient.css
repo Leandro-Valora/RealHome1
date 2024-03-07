@@ -1,0 +1,114 @@
+.property-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.property {
+    width: calc(33.33% - 20px); /* Imposta la larghezza della singola proprietà */
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.property img {
+    width: 100%; /* Rendi l'immagine della proprietà piena larghezza */
+    height: auto;
+    border-radius: 5px;
+}
+
+.property h3 {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.property p {
+    font-size: 14px;
+    color: #666;
+}
+
+h2 {
+    color: rgb(199, 55, 12);
+}
+
+.titolo-1 {
+    color: rgb(160, 61, 31);
+    font-style: italic;
+}
+
+.container-1 {
+    display: flex;
+    align-items: center; /* Centra verticalmente i contenuti */
+}
+
+.logo-esteso {
+    flex: 0 0 auto; /* Imposta la larghezza del logo come non flessibile */
+    margin-right: 2%; /* Aggiungi spazio tra il logo e il titolo */
+}
+
+.titolo-2 {
+    color: rgb(160, 61, 31);
+    font-style: italic;
+    margin-left: 20%;
+}
+
+
+
+/*css per main infoclient */
+.main-content {
+    margin-left: 30%;
+    margin-top: 4%;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Altezza al 100% della viewport */
+}
+
+.user-info {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.user-info h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.user-info p {
+    margin-bottom: 10px;
+}
+
+.user-info p strong {
+    display: inline-block;
+    width: 100px;
+    font-weight: bold;
+}
+
+.user-info p.password {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.button-container {
+    margin-right: 50%;
+    text-align: center;
+    margin-top: 4%;
+}
+
+.button-container button {
+    padding: 3% 6%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.button-container button:hover {
+    background-color: #0056b3;
+}
+

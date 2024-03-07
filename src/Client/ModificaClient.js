@@ -1,12 +1,12 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import AdBar from '../AdBar';
-import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
+import { Link, useLocation } from 'react-router-dom';
+import Footer from '../components/Footer';
+import UserProfile from '../UserProfile';
 import axios from 'axios';
-import "../StileTabella.css";
+import ClientBar from './components/ClientBar';
+//import "../StileTabella.css";
 
-function ModificaUser() {
+function ModificaClient() {
     const location = useLocation();
     const [userDet, setUsers] = React.useState({
         Name: '',
@@ -60,6 +60,8 @@ function ModificaUser() {
             axios.post('http://localhost:8081/admin/crudAdmin/modificaUser', userDet)
             .then(response => {
                 if(response.data.status === "Success") {
+                    UserProfile.setName(userDet.Name);
+                    console.log("userdet: " + userDet.Name);
                     setSuccessMessage("Utente modificato con successo!");
                 } else {
                     console.log("Failed to update user");
@@ -81,11 +83,11 @@ function ModificaUser() {
     
     return (
         <>
-            <AdBar />
+            <ClientBar />
             <br />
             <div>
                 <header>
-                    <h1 className='titolo-1'><center>Modifica i campi dell'utente</center></h1>
+                    <h1 className='titolo-1'><center>Modifica i tuoi campi</center></h1>
                 </header>
                 <br />
                 <main>
@@ -133,7 +135,8 @@ function ModificaUser() {
                                     />
                                     {errors.password && <span className="text-danger">{errors.password}</span>}
                                 </div>
-                                <button type="submit" className="login-btn btn btn-success"> Modifica </button>
+                                <button type="submit" className="login-btn btn btn-success"> Modifica </button> 
+                                <Link to="/Client/infoClient"><button className="login-btn btn"> Indietro </button></Link>
                             </form>
                         </div>
                     </div>
@@ -144,4 +147,4 @@ function ModificaUser() {
     );
 }
 
-export default ModificaUser;
+export default ModificaClient;

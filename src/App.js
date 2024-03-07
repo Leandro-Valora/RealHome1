@@ -1,7 +1,6 @@
 import Login from './Login';
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import Signup from './Signup';
-import Home from './Home';
 import RealHome from './RealHome';
 //homepage
 import About from './info/About';
@@ -24,6 +23,10 @@ import ModificaPropietario from './admin/crudAdmin/ModificaPropietario';
 import ModificaAgente from './admin/crudAdmin/ModificaAgente';
 import ModificaAdmin from './admin/crudAdmin/ModificaAdmin';
 import ModificaCasa from './admin/crudAdmin/ModificaCasa';
+//client
+import HomeClient from './Client/HomeClient';
+import InfoClient from './Client/InfoClient';
+import ModificaClient from './Client/ModificaClient';
 
 
 function App() {
@@ -33,7 +36,6 @@ function App() {
         <Route path='/' element={<RealHome />}></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/signup' element={<Signup />}></Route>
-        <Route path='/home' element={<Home />}></Route>
         <Route path='/info/about' element={<About />}></Route>
         <Route path='/info/contatti' element={<Contatti />}></Route>
         
@@ -56,6 +58,11 @@ function App() {
         <Route path='/admin/crudAdmin/modificaAdmin' element={<ModificaAdmin />} />
         <Route path='/admin/crudAdmin/modificaCasa' element={<ModificaCasa />} />
         
+        {/* CLIENT */}
+        <Route path='/Client/homeClient' element={<HomeClient />} />
+        <Route path='/Client/infoClient' element={<InfoClient />} />
+        <Route path='/Client/modificaClient' element={<ModificaClient />} />
+
       </Routes> 
     </BrowserRouter>
   );
