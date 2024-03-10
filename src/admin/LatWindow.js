@@ -20,9 +20,8 @@ function LatWindow() {
                     </svg>
                 </div>
                 <div className="container" id= "Login">
-                    <h3><strong>Ciao {UserProfile.getName()}</strong></h3>                        
+                    <h3><strong>Ciao {localStorage.getItem('userName')}</strong></h3>                        
                     <div className="form-outline form-white mb-4">
-                        {/* Utilizza un evento onClick per gestire il logout */}
                         <button className='btn btn-default border w-100 bg-light rounded-0' onClick={handleLogout}>logout</button>
                     </div>   
                 </div>

@@ -3,7 +3,7 @@ import './About.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import logoEsteso from '../components/pic/logo.png';
-import office from './office.png';
+import office from './img/office.png';
 
 class About extends Component {
     state = {

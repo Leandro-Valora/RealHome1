@@ -1,0 +1,42 @@
+.houses-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.house {
+    width: 40%;
+    margin-bottom: 20px;
+    box-shadow: 7px -4px 8px #a65000;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-right: 3%;
+    margin-left: 3%;
+}
+
+.house-image img {
+    width: 100%;
+    height: auto;
+}
+
+.house-details {
+    padding: 20px;
+}
+
+.house-details h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.house-details p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.logo-esteso2 {
+    margin-right: 6%;
+}
+
+.subtitle-1 {
+    color: #151f2b;
+}

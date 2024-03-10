@@ -143,7 +143,7 @@ function ModificaCasa() {
                     <div className="login-form-container">
                         <div className="login-form">
                             <p>{successMessage && <span className="text-success">{successMessage}</span>}</p>
-                            <form onSubmit={handleSubmit}>
+                                <form onSubmit={handleSubmit}>
                                     <div className="login-form-group">
                                         <label htmlFor="PropietarioIm">
                                             <strong>Propietario</strong>

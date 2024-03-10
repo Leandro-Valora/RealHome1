@@ -14,12 +14,12 @@ function InfoClient() {
         async function fetchUserInfo() {
             try {
                 const userName = UserProfile.getName();
-                if (!userName || userName.trim() === "generic") {
+                if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
                     // Reindirizza l'utente alla pagina principale se il nome è vuoto
                     window.location.href = "/";
                 } else {
                     // Effettua la chiamata al backend per ottenere le informazioni dell'utente
-                    const valoreId = UserProfile.getId();
+                    const valoreId = localStorage.getItem('userId');
                     const response = await axios.get('http://localhost:8081/Client/InfoClient', {
                         params: {
                             Id_signup: valoreId

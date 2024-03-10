@@ -23,7 +23,12 @@ function Login() {
                 navigate("/Login"); // Reindirizzo alla pagina principale se l'utente è già loggato
             }
             else {
-                navigate("/");
+                if(UserProfile.getType() === "Admin") {
+                    navigate("/admin/Admin");
+                }
+                else {
+                    navigate("/Client/homeClient");
+                }
             }
         };
 
@@ -44,13 +49,19 @@ function Login() {
             .then(res => {
                 if (res.data.status === "Success") {
                     const nameUser = res.data.name;
+                    const typeUser = res.data.type;
                     UserProfile.setName(nameUser);
+                    UserProfile.setType(typeUser);
+                    localStorage.setItem('userName', nameUser);
+                    localStorage.setItem('userType', typeUser);
+
                     if(res.data.type === "Admin") {
                         navigate("/admin/Admin");
                     }
                     else {
                         const idUser = res.data.Id_signup;
                         UserProfile.setId(idUser);
+                        localStorage.setItem('userId', idUser);
                         navigate("/Client/homeClient");
                     }
                 } else {

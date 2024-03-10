@@ -2,6 +2,7 @@
 var UserProfile = (function() {
     var full_name = "";
     var Id = "";
+    var typeU = "";
   
     var getName = function() {
       return full_name;    // Or pull this from cookie/localStorage
@@ -20,12 +21,22 @@ var UserProfile = (function() {
       Id = IdClient;     
       // Also set this in cookie/localStorage
     };
+
+    var getType = function() {
+      return typeU;    // Or pull this from cookie/localStorage
+    };
+  
+    var setType = function(typeClient) {
+      typeU = typeClient;     
+    };
   
     return {
       getName: getName,
       setName: setName, 
       getId: getId,
-      setId: setId
+      setId: setId,
+      getType: getType,
+      setType: setType
     }
   
   })();

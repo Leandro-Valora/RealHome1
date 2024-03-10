@@ -5,6 +5,7 @@ import RealHome from './RealHome';
 //homepage
 import About from './info/About';
 import Contatti from './info/Contatti';
+import CaseSpeciali from './info/CaseSpeciali';
 //admin
 import Admin from './admin/Admin';
 import ListaAdmin from './admin/ListaAdmin';
@@ -27,7 +28,8 @@ import ModificaCasa from './admin/crudAdmin/ModificaCasa';
 import HomeClient from './Client/HomeClient';
 import InfoClient from './Client/InfoClient';
 import ModificaClient from './Client/ModificaClient';
-
+import HomeSearch from './Client/HomeSearch';
+import DettagliCasa from './Client/DettagliCasa';
 
 function App() {
   return (
@@ -38,6 +40,7 @@ function App() {
         <Route path='/signup' element={<Signup />}></Route>
         <Route path='/info/about' element={<About />}></Route>
         <Route path='/info/contatti' element={<Contatti />}></Route>
+        <Route path='/info/caseSpeciali' element={<CaseSpeciali />}></Route>
         
         {/* ADMIN */}
         <Route path='/admin/admin' element={<Admin />}></Route>
@@ -62,6 +65,8 @@ function App() {
         <Route path='/Client/homeClient' element={<HomeClient />} />
         <Route path='/Client/infoClient' element={<InfoClient />} />
         <Route path='/Client/modificaClient' element={<ModificaClient />} />
+        <Route path='/Client/homesearch' element={<HomeSearch />} />
+        <Route path='/Client/dettaglicasa' element={<DettagliCasa />} />
 
       </Routes> 
     </BrowserRouter>

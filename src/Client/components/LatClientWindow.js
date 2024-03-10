@@ -6,6 +6,8 @@ function LatClientWindow() {
 
     const handleLogout = () => {
         UserProfile.setName("logout");
+        const localUser = "logout";
+        localStorage.setItem('userName', localUser);
         // Dopo il logout, reindirizzo l'utente alla pagina di login
         navigate("/");
     };
@@ -24,7 +26,7 @@ function LatClientWindow() {
                     </svg>
                 </div>
                 <div className="container" id= "Login">
-                    <h3><strong>Ciao {UserProfile.getName()}</strong></h3>
+                    <h3><strong>Ciao {localStorage.getItem('userName')}</strong></h3>
                     <div className="form-outline form-white mb-4">
                         <button className='btn btn-default border w-100 bg-light rounded-0' onClick={handleInfo}>Info personali</button>
                     </div>
