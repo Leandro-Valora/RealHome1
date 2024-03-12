@@ -14,19 +14,23 @@ class CreateCasa extends Component {
         values: {
             owner: '',
             agente: '',
+            nome: '',
             paese: '',
             citta: '',
             via: '',
             prezzo: '',
+            immagine: '',
             descrizione: ''
         },
         errors: {
             proprietario: '',
             agente: '',
+            nome: '',
             paese: '',
             citta: '',
             via: '',
             prezzo: '',
+            immagine: '',
             descrizione: ''
         },
         successMessage: '',
@@ -37,7 +41,7 @@ class CreateCasa extends Component {
 
     componentDidMount() {
         const userName = UserProfile.getName();
-        if (!userName || userName.trim() === "generic") {
+        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         }
@@ -140,7 +144,7 @@ class CreateCasa extends Component {
                                             onChange={handleInput}
                                             className="form-control rounded-0"
                                         >
-                                            <option value="">Seleziona propietario Immbile</option>
+                                            <option value="">Seleziona propietario Immobile</option>
                                             {this.state.proprietari && this.state.proprietari.map(prop => (
                                                 <option key={prop.Id_propietario} value={prop.Id_propietario}>{prop.Nome.charAt(0).toUpperCase() + prop.Nome.slice(1)} {prop.Cognome.charAt(0).toUpperCase() + prop.Cognome.slice(1)}</option>
                                             ))}
@@ -162,6 +166,19 @@ class CreateCasa extends Component {
                                             ))}
                                         </select>
                                         {errors.agente && <span className="text-danger">{errors.agente}</span>}
+                                    </div>
+                                    <div className="login-form-group">
+                                        <label htmlFor="nome">
+                                            <strong>Nome</strong>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="nome"
+                                            placeholder="Inserisci nome"
+                                            onChange={handleInput}
+                                            className="form-control rounded-0"
+                                        />
+                                        {errors.nome && <span className="text-danger">{errors.nome}</span>}
                                     </div>
                                     <div className="login-form-group">
                                         <label htmlFor="paese">
@@ -204,7 +221,7 @@ class CreateCasa extends Component {
                                     </div>
                                     <div className="login-form-group">
                                         <label htmlFor="prezzo">
-                                            <strong>Prezzo</strong>
+                                            <strong>Prezzo</strong> <i>(ricorda di usare il punto)</i>
                                         </label>
                                         <div className="price-input-container">
                                             <span className="currencyinput">€</span>
@@ -217,6 +234,19 @@ class CreateCasa extends Component {
                                             />
                                         </div>
                                         {errors.prezzo && <span className="text-danger">{errors.prezzo}</span>}
+                                    </div>
+                                    <div className="login-form-group">
+                                        <label htmlFor="immagine">
+                                            <strong>Immagine Copertina</strong>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="immagine"
+                                            placeholder="Inserisci URL Casa"
+                                            onChange={handleInput}
+                                            className="form-control rounded-0"
+                                        />
+                                        {errors.immagine && <span className="text-danger">{errors.immagine}</span>}
                                     </div>
                                     <div className="login-form-group">
                                         <label htmlFor="descrizione">

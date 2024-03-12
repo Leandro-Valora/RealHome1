@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import ClientBar from './components/ClientBar';
+import AdBar from './AdBar';
 import Footer from '../components/Footer';
 import UserProfile from '../UserProfile';
 import axios from 'axios';
-import './DettagliCasa.css';
+import '../Client/DettagliCasa.css';
 
-function DettagliCasa() {
+function DettagliCasaAdmin() {
     const location = useLocation();
     const [casaDet, setCase] = useState({
         PropietarioIm: '',
@@ -21,14 +21,6 @@ function DettagliCasa() {
     const [agenti, setAgenti] = useState([]);
     const [interImage, setImage] = useState([]);
     const [enlargedImage, setEnlargedImage] = useState(null);
-    const [showHouseForm, setShowHouseForm] = useState(false);
-    const [formData, setFormData] = useState({
-        titolo: '',
-        descrizione: ''
-    });
-
-    const [showMessage, setShowMessage] = useState(false);
-    const [showError, setShowError] = useState(false);
 
     React.useEffect(() => {
         const userName = UserProfile.getName();
@@ -107,47 +99,9 @@ function DettagliCasa() {
         setEnlargedImage(null);
     };
 
-    // Funzione per mostrare/nascondere il form
-    const toggleHouseForm = () => {
-        setShowHouseForm(!showHouseForm);
-    };
-
-    // Funzione per gestire l'invio del modulo
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const searchParams1 = new URLSearchParams(location.search);
-        const agentId = searchParams1.get('agentId');
-        const email = localStorage.getItem('emailId');
-        const titoloCompleto = formData.titolo + " X " + casaDet.Nome;
-        console.log("titolo msg --> " + titoloCompleto);
-        
-        axios.post('http://localhost:8081/Client/InviaMessaggio', {
-            Email_richiedente: email,
-            Id_agente: agentId,
-            Titolo: titoloCompleto,
-            Descrizione_msg: formData.descrizione
-        })
-        .then(response => {
-            console.log('Email inviata con successo:');
-            setShowMessage(true);
-        })
-        .catch(error => {
-            console.error('Errore durante l\'invio dell\'email:', error);
-            setShowError(true);
-        });
-    };
-
-    // Funzione per aggiornare lo stato del modulo
-    const handleChange = (event) => {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value
-        });
-    };
-
     return (
         <>
-            <ClientBar />
+            <AdBar />
             <br />
             <div>
                 {/* Il resto del tuo codice rimane invariato */}
@@ -189,20 +143,7 @@ function DettagliCasa() {
                     <p><strong>Cognome:</strong> {agenti.Cognome ? agenti.Cognome.charAt(0).toUpperCase() + agenti.Cognome.slice(1) : ''}</p>
                     <p><strong>Email:</strong> {agenti.Email}</p>
                     <p><strong>Numero:</strong> {agenti.Numero_cell}</p>
-                    <br />
-                    <h2 className='info-casa puntatore' onClick={toggleHouseForm}>Scrivimi per più info &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+</h2>
-                    <div className="house-form" style={{ display: showHouseForm ? 'block' : 'none' }}>
-                    <p>{showMessage && <span className="text-success">{formData.titolo} : inviato con successo</span>}</p>
-                    <p>{showError && <span className="text-danger">Errore invio messaggio</span>}</p>
-                        <form onSubmit={handleSubmit}>
-                            <label htmlFor="titolo">Titolo:</label><br />
-                            <input type="text" id="titolo" placeholder='Richiesta info...' name="titolo" value={formData.titolo} onChange={handleChange} /><br />
-                            <label htmlFor="descrizione">Descrizione:</label><br />
-                            <textarea id="descrizione" placeholder='Vorrei fissare un appuntamento per...' name="descrizione" rows="4" cols="50" value={formData.descrizione} onChange={handleChange}></textarea><br />
-                            <input type="submit" value="Invia" />
-                        </form>
-                    </div>
-                    
+                    <br />                    
                 </div>
             </div>
             <Footer footer={{ id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home'}} />
@@ -210,4 +151,4 @@ function DettagliCasa() {
     );
 }
 
-export default DettagliCasa;
+export default DettagliCasaAdmin;

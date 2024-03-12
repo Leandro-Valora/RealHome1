@@ -10,6 +10,10 @@ function CasaValidation(values) {
         error.agente = "campo agente vuoto";
     }
 
+    if(values.nome === "") {
+        error.nome = "campo nome vuoto";
+    }
+
     if(values.paese === "") {
         error.paese = "campo paese vuoto";
     }

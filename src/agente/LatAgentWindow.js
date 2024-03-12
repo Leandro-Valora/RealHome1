@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import UserProfile from '../UserProfile';
 
-function LatWindow() {
+function LatAgentWindow() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -33,4 +33,4 @@ function LatWindow() {
     );
 }
 
-export default LatWindow;
+export default LatAgentWindow;

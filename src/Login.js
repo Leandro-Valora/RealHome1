@@ -52,17 +52,26 @@ function Login() {
                     const typeUser = res.data.type;
                     UserProfile.setName(nameUser);
                     UserProfile.setType(typeUser);
+                    localStorage.removeItem('userName');    //svuoto contenuto
                     localStorage.setItem('userName', nameUser);
                     localStorage.setItem('userType', typeUser);
 
                     if(res.data.type === "Admin") {
                         navigate("/admin/Admin");
                     }
-                    else {
+                    else if(res.data.type === "Signup") {
                         const idUser = res.data.Id_signup;
                         UserProfile.setId(idUser);
                         localStorage.setItem('userId', idUser);
+                        //set email user
+                        const emailUser = res.data.email;
+                        localStorage.setItem('emailId', emailUser);
                         navigate("/Client/homeClient");
+                    }
+                    else {
+                        const idAgente = res.data.Id_signup;
+                        localStorage.setItem('aId', idAgente);
+                        navigate("/agente/homeAgente");
                     }
                 } else {
                     console.log("Riprova ancora dai...");

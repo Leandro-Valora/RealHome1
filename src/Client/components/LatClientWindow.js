@@ -8,6 +8,8 @@ function LatClientWindow() {
         UserProfile.setName("logout");
         const localUser = "logout";
         localStorage.setItem('userName', localUser);
+        localStorage.removeItem('userId');
+        localStorage.setItem('userType', localUser);
         // Dopo il logout, reindirizzo l'utente alla pagina di login
         navigate("/");
     };

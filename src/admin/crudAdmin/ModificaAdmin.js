@@ -29,7 +29,7 @@ function ModificaAdmin() {
 
     React.useEffect(() => {
         const userName = UserProfile.getName();
-        if (!userName || userName.trim() === "generic") {
+        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {

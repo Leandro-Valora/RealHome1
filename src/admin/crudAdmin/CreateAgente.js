@@ -27,7 +27,7 @@ class CreateAgente extends Component {
 
     componentDidMount() {
         const userName = UserProfile.getName();
-        if (!userName || userName.trim() === "generic") {
+        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         }
@@ -82,7 +82,7 @@ class CreateAgente extends Component {
                         <div className="login-form-container">
                             <div className="login-form">
                                 <p>{showMessage && <span className="text-success">{successMessage}</span>}</p>
-                                <form onSubmit={handleSubmit}>
+                                <form onSubmit={handleSubmit}> 
                                     <div className="login-form-group">
                                         <label htmlFor="nome">
                                             <strong>Nome</strong>

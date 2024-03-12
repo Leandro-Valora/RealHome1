@@ -15,6 +15,7 @@ class Offers extends Component {
             { id: 'image-8', titolo: 'Villa Neptune', testo: 'Locata in Grecia', immagine: "https://www.myluxury.it/img/2021/07/casa-di-lusso-1200x800.jpg" }
         ]
     }
+    
     render() {
         return (
             <>

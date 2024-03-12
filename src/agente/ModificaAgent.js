@@ -1,54 +1,55 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import AdBar from '../AdBar';
-import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
+import { Link, useLocation } from 'react-router-dom';
+import Footer from '../components/Footer';
+import UserProfile from '../UserProfile';
 import axios from 'axios';
-import "../StileTabella.css";
+import AgenteBar from './AgenteBar';
 
-function ModificaPropietario() {
+function ModificaAgent() {
     const location = useLocation();
-    const [propDet, setOwners] = React.useState({
+    const [agentDet, setAgent] = React.useState({
         Nome: '',
-        Cognome: '',
         Email: '',
+        Cognome: '',
+        Password: '',
         Numero_cell: '',
-        Id_propietario:''
+        Id_agente:''
     });
     const [successMessage, setSuccessMessage] = React.useState('');
     const [errors] = React.useState({
         nome: '',
-        email: '',
         cognome: '',
-        numero_cell: ''
+        email: '',
+        Numero_cell: '',
+        password: ''
     });
 
     React.useEffect(() => {
         const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if ((!userName || userName.trim() === "generic") && !(localStorage.getItem('userName'))) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
             const searchParams = new URLSearchParams(location.search);
-            const ownerId = searchParams.get('userProp');
-            if (ownerId) {
-                //dettagli dell'utente utilizzando l'ID recuperato dall'URL
-                axios.get('http://localhost:8081/admin/getPropDetails', {
+            const userId = searchParams.get('agentId');
+            if (userId) {
+                //dettagli dell'agente utilizzando l'ID recuperato dall'URL
+                axios.get('http://localhost:8081/agente/getAgentDetails', {
                     params: {
-                        ownerId: ownerId
+                        agenteId: userId
                     }
                 }).then(response => {
                     if(response.data.status === "Success") {
-                        setOwners(response.data.propDetails[0]);
+                        setAgent(response.data.agentDetails[0]);
                     } else {
-                        console.log("Failed to fetch user details");
+                        console.log("Failed to fetch agent details");
                     }
                 })
                 .catch(error => {
-                    console.log("Error fetching user details:", error);
+                    console.log("Error fetching agent details:", error);
                 });
             } else {
-                console.log("User ID not found in URL");
+                console.log("agent ID not found in URL");
             }
         }
     }, [location]);
@@ -58,10 +59,12 @@ function ModificaPropietario() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if (!Object.values(propDet).some(value => value === "")) {
-            axios.post('http://localhost:8081/admin/crudAdmin/modificaProp', propDet)
+        if (!Object.values(agentDet).some(value => value === "")) {
+            console.log("agentdet: " + JSON.stringify(agentDet));
+            axios.post('http://localhost:8081/agente/modificaAgente', agentDet)
             .then(response => {
                 if(response.data.status === "Success") {
+                    UserProfile.setName(agentDet.Name);
                     setSuccessMessage("Utente modificato con successo!");
                 } else {
                     console.log("Failed to update user");
@@ -75,20 +78,19 @@ function ModificaPropietario() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setOwners(prevUserDet => ({
-            ...prevUserDet,
+        setAgent(prevAgentDet => ({
+            ...prevAgentDet,
             [name]: value
         }));
     };
     
-
     return (
         <>
-            <AdBar />
+            <AgenteBar />
             <br />
             <div>
                 <header>
-                    <h1 className='titolo-1'><center>Modifica i campi del Propietario degli Immobili</center></h1>
+                    <h1 className='titolo-1'><center>Modifica i tuoi campi</center></h1>
                 </header>
                 <br />
                 <main>
@@ -103,7 +105,7 @@ function ModificaPropietario() {
                                     <input
                                         type="text"
                                         name="Nome"
-                                        value={propDet.Nome || ''}
+                                        value={agentDet.Nome || ''}
                                         onChange={handleChange}
                                         className="form-control rounded-0"
                                     />
@@ -116,20 +118,20 @@ function ModificaPropietario() {
                                     <input
                                         type="text"
                                         name="Cognome"
-                                        value={propDet.Cognome || ''}
+                                        value={agentDet.Cognome || ''}
                                         onChange={handleChange}
                                         className="form-control rounded-0"
                                     />
                                     {errors.cognome && <span className="text-danger">{errors.cognome}</span>}
                                 </div>
                                 <div className="login-form-group">
-                                    <label htmlFor="cognome">
-                                        <strong>Numero telefonico</strong>
+                                    <label htmlFor="numero_cell">
+                                        <strong>Numero</strong>
                                     </label>
                                     <input
                                         type="text"
                                         name="Numero_cell"
-                                        value={propDet.Numero_cell || ''}
+                                        value={agentDet.Numero_cell || ''}
                                         onChange={handleChange}
                                         className="form-control rounded-0"
                                     />
@@ -142,13 +144,28 @@ function ModificaPropietario() {
                                     <input
                                         type="email"
                                         name="Email"
-                                        value={propDet.Email || ''}
+                                        value={agentDet.Email || ''}
                                         onChange={handleChange}
                                         className="form-control rounded-0"
                                     />
                                     {errors.email && <span className="text-danger">{errors.email}</span>}
                                 </div>
-                                <button type="submit" className="login-btn btn btn-success"> Aggiungi </button>
+                                <div className="login-form-group">
+                                    <label htmlFor="password">
+                                        <strong>Password</strong>
+                                    </label>
+                                    <input
+                                        type="password"
+                                        name="Password"
+                                        id="password"
+                                        value={agentDet.Password || ''}
+                                        onChange={handleChange}
+                                        className="form-control rounded-0"
+                                    />
+                                    {errors.password && <span className="text-danger">{errors.password}</span>}
+                                </div>
+                                <button type="submit" className="login-btn btn btn-success"> Modifica </button> 
+                                <Link to="/agente/infoAgente"><button className="login-btn btn"> Indietro </button></Link>
                             </form>
                         </div>
                     </div>
@@ -159,4 +176,4 @@ function ModificaPropietario() {
     );
 }
 
-export default ModificaPropietario;
+export default ModificaAgent;

@@ -4,7 +4,6 @@ import Footer from '../components/Footer';
 import UserProfile from '../UserProfile';
 import axios from 'axios';
 import ClientBar from './components/ClientBar';
-//import "../StileTabella.css";
 
 function ModificaClient() {
     const location = useLocation();

@@ -39,8 +39,6 @@ class HomeClient extends Component {
                     <br />
                     <center><img src={logoEsteso} className="logo-esteso" alt="Logo Esteso" /></center>  
                     <br />        
-                    {/* QUI CODICE per pagina specifica  */}
-                    
                     <div>
                         <header>
                             <h1 className='titolo-1'><center>Benvenuti all'Agenzia Immobiliare Real-Home</center></h1>

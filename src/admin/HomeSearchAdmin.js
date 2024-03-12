@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import ClientBar from './components/ClientBar';
+import AdBar from './AdBar';
 import Footer from '../components/Footer';
 import logoEsteso from '../components/pic/logo.png';
-import "./HomeSearch.css";
+import '../Client/HomeSearch.css';
 import UserProfile from '../UserProfile';
 import { Link } from 'react-router-dom';
 
-class HomeSearch extends Component {
+class HomeSearchAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -100,7 +100,7 @@ class HomeSearch extends Component {
     render() {
         return (
             <>
-                <ClientBar />
+                <AdBar />
                 <br />
                 <center><img src={logoEsteso} className="logo-esteso logo-esteso2" alt="Logo Esteso" /></center>
                 <h2 className='subtitle-1'><b><i>Elenco case disponibili</i></b></h2>
@@ -113,13 +113,13 @@ class HomeSearch extends Component {
                         {this.state.listaCase.map(house => (
                             <div key={house.Id_casa} className="house">
                                 <div className="house-image">
-                                    <Link to={`/Client/dettaglicasa?casaId=${house.Id_casa}&agentId=${house.IdAgente}`}>
+                                    <Link to={`/admin/dettaglicasa?casaId=${house.Id_casa}&agentId=${house.IdAgente}`}>
                                         <img src={house.ImageURL} alt="House" />
                                     </Link>
                                 </div>
                                 <div className="house-details">
                                     <h3><i>
-                                    <Link to={`/Client/dettaglicasa?casaId=${house.Id_casa}&agentId=${house.IdAgente}`}>{house.Nome} </Link>
+                                    <Link to={`/admin/dettaglicasa?casaId=${house.Id_casa}&agentId=${house.IdAgente}`}>{house.Nome} </Link>
                                     </i></h3>
                                     <p><b><i>Indirizzo</i></b></p>
                                     <p>{house.Via}</p>
@@ -144,4 +144,4 @@ class HomeSearch extends Component {
     }
 }
 
-export default HomeSearch;
+export default HomeSearchAdmin;

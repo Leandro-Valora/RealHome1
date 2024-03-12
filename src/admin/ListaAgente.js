@@ -82,7 +82,7 @@ class ListaAgente extends Component {
                 <br />                     
                 <div>
                     <header>
-                        <h1 className='titolo-1'><center>Benvenuton nel centro di controllo degli gli agenti</center></h1>
+                        <h1 className='titolo-1'><center>Benvenuton nel centro di controllo degli agenti</center></h1>
                     </header>
                     <br />
                     <main>

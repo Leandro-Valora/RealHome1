@@ -8,8 +8,8 @@ class Card extends Component {
                 <div className="card">
                     <img src={this.props.card.immagine} className="gallery__img" alt={this.props.card.title} />
                     <div className="card-body">
-                        <h5 className="card-title">{this.props.card.titolo}</h5>
-                        <p className="card-text">{this.props.card.testo}</p>
+                        <h5 className="card-title"><b>{this.props.card.titolo}</b></h5>
+                        <p className="card-text"><i>{this.props.card.testo}</i></p>
                         <Link to="/info/caseSpeciali"> 
                             <button className="btn btn-light">Scopri di più</button>
                         </Link>

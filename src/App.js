@@ -6,6 +6,7 @@ import RealHome from './RealHome';
 import About from './info/About';
 import Contatti from './info/Contatti';
 import CaseSpeciali from './info/CaseSpeciali';
+import HomeSearchGeneric from './HomeSearchGeneric';
 //admin
 import Admin from './admin/Admin';
 import ListaAdmin from './admin/ListaAdmin';
@@ -24,12 +25,23 @@ import ModificaPropietario from './admin/crudAdmin/ModificaPropietario';
 import ModificaAgente from './admin/crudAdmin/ModificaAgente';
 import ModificaAdmin from './admin/crudAdmin/ModificaAdmin';
 import ModificaCasa from './admin/crudAdmin/ModificaCasa';
+import AddImageCasa from './admin/crudAdmin/AddImageCasa';
+import ModificaImage from './admin/crudAdmin/ModificaImage';
+import CaseVendute from './admin/CaseVendute';
+import HomeSearchAdmin from './admin/HomeSearchAdmin';
+import DettagliCasaAdmin from './admin/DettagliCasaAdmin';
 //client
 import HomeClient from './Client/HomeClient';
 import InfoClient from './Client/InfoClient';
 import ModificaClient from './Client/ModificaClient';
 import HomeSearch from './Client/HomeSearch';
 import DettagliCasa from './Client/DettagliCasa';
+//agente
+import HomeAgente from './agente/HomeAgente';
+import InfoAgente from './agente/InfoAgente';
+import ModificaAgent from './agente/ModificaAgent';
+import Messaggi from './agente/Messaggi';
+import CaseAgente from './agente/CaseAgente';
 
 function App() {
   return (
@@ -41,6 +53,7 @@ function App() {
         <Route path='/info/about' element={<About />}></Route>
         <Route path='/info/contatti' element={<Contatti />}></Route>
         <Route path='/info/caseSpeciali' element={<CaseSpeciali />}></Route>
+        <Route path='/homesearch' element={<HomeSearchGeneric />}></Route>
         
         {/* ADMIN */}
         <Route path='/admin/admin' element={<Admin />}></Route>
@@ -60,6 +73,11 @@ function App() {
         <Route path='/admin/crudAdmin/modificaAgente' element={<ModificaAgente />} />
         <Route path='/admin/crudAdmin/modificaAdmin' element={<ModificaAdmin />} />
         <Route path='/admin/crudAdmin/modificaCasa' element={<ModificaCasa />} />
+        <Route path='/admin/crudAdmin/addimageCasa' element={<AddImageCasa />} />
+        <Route path='/admin/crudAdmin/modificaImage' element={<ModificaImage />} />
+        <Route path='/admin/caseVendute' element={<CaseVendute />} />
+        <Route path='/admin/homesearch' element={<HomeSearchAdmin />} />
+        <Route path='/admin/dettaglicasa' element={<DettagliCasaAdmin />} />
         
         {/* CLIENT */}
         <Route path='/Client/homeClient' element={<HomeClient />} />
@@ -67,6 +85,13 @@ function App() {
         <Route path='/Client/modificaClient' element={<ModificaClient />} />
         <Route path='/Client/homesearch' element={<HomeSearch />} />
         <Route path='/Client/dettaglicasa' element={<DettagliCasa />} />
+
+        {/* AGENTE */}
+        <Route path='/agente/homeAgente' element={<HomeAgente />} />
+        <Route path='/agente/infoAgente' element={<InfoAgente />} />
+        <Route path='/agente/modificaAgent' element={<ModificaAgent />} />
+        <Route path='/agente/messaggi' element={<Messaggi />} />
+        <Route path='/agente/case' element={<CaseAgente />} />
 
       </Routes> 
     </BrowserRouter>

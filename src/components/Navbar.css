@@ -144,3 +144,22 @@ button, input, optgroup, select, textarea {
 .bi bi-x-square-fill {
     color: #a65000;
 }
+
+/* ruota immagini */
+.card {
+    width: 100rem;
+    overflow: hidden; /* Assicurati che il contenuto in eccesso venga nascosto */
+}
+
+.card img {
+    animation: slideLeft 10s linear infinite; /* Applica l'animazione all'immagine */
+}
+
+@keyframes slideLeft {
+    0% {
+        transform: translateX(0); /* Parte dall'origine */
+    }
+    10% {
+        transform: translateX(-10%); /* Scorre completamente verso sinistra */
+    }
+}

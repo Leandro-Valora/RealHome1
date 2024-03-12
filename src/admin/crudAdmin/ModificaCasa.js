@@ -11,20 +11,24 @@ function ModificaCasa() {
     const [casaDet, setCase] = React.useState({
         PropietarioIm: '',
         AgenteImm: '',
+        Nome: '',
         Paese: '',
         Citta: '',
         Via: '',
         Prezzo: '',
+        ImageURL: '',
         Descrizione: ''
     });
     const [successMessage, setSuccessMessage] = React.useState('');
     const [errors] = React.useState({
         proprietario: '',
         agente: '',
+        nome: '',
         paese: '',
         citta: '',
         via: '',
         prezzo: '',
+        immagine: '',
         descrizione: ''
     });
 
@@ -34,7 +38,7 @@ function ModificaCasa() {
 
     React.useEffect(() => {
         const userName = UserProfile.getName();
-        if (!userName || userName.trim() === "generic") {
+        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -105,7 +109,7 @@ function ModificaCasa() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
+        
         if (!Object.values(casaDet).some(value => value === "")) {
             axios.post('http://localhost:8081/admin/crudAdmin/modificaCasa', casaDet)
             .then(response => {
@@ -181,6 +185,19 @@ function ModificaCasa() {
                                         {errors.agente && <span className="text-danger">{errors.agente}</span>}
                                     </div>
                                     <div className="login-form-group">
+                                        <label htmlFor="nome">
+                                            <strong>Nome casa</strong>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="Nome"
+                                            value={casaDet.Nome || ''}
+                                            onChange={handleChange}
+                                            className="form-control rounded-0"
+                                        />
+                                        {errors.nome && <span className="text-danger">{errors.nome}</span>}
+                                    </div>
+                                    <div className="login-form-group">
                                         <label htmlFor="paese">
                                             <strong>Paese</strong>
                                         </label>
@@ -234,6 +251,19 @@ function ModificaCasa() {
                                             />
                                         </div>
                                         {errors.prezzo && <span className="text-danger">{errors.prezzo}</span>}
+                                    </div>
+                                    <div className="login-form-group">
+                                        <label htmlFor="immagine">
+                                            <strong>Immagine Copertina</strong>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="ImageURL"
+                                            value={casaDet.ImageURL || ''}
+                                            onChange={handleChange}
+                                            className="form-control rounded-0"
+                                        />
+                                        {errors.immagine && <span className="text-danger">{errors.immagine}</span>}
                                     </div>
                                     <div className="login-form-group">
                                         <label htmlFor="descrizione">

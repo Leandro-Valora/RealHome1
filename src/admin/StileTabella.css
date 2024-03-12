@@ -81,3 +81,7 @@
 .popup-inner button:last-child:hover {
   background-color: #c82333;
 }
+
+.stretta {
+  width: 50px;
+}

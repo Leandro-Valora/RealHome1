@@ -1,30 +1,30 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import ClientBar from './components/ClientBar';
-import Footer from '../components/Footer';
-import logoEsteso from '../components/pic/logo.png';
-import "./HomeSearch.css";
-import UserProfile from '../UserProfile';
-import { Link } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import logoEsteso from './components/pic/logo.png';
+import './Client/HomeSearch.css';
 
-class HomeSearch extends Component {
+class HomeSearchGeneric extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listaCase: [],
-            loading: true
+            loading: true,
+            showPopup: false, // Stato per gestire la visualizzazione del popup
+            popupMessage: ""
         };
     }
 
+    showPopup = (message) => {
+        this.setState({
+            showPopup: true,
+            popupMessage: message,
+        });
+    };
+
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !(localStorage.getItem('userName'))) {
-            // Reindirizza l'utente alla pagina principale se il nome è vuoto
-            window.location.href = "/";
-        } else {
-            // Esegui la funzione per ottenere i dati dalle URL e recuperare le case corrispondenti
-            this.getHomesFromQueryParams();
-        }
+        this.getHomesFromQueryParams();
     }
 
     async getHomesFromQueryParams() {
@@ -100,7 +100,7 @@ class HomeSearch extends Component {
     render() {
         return (
             <>
-                <ClientBar />
+                <Navbar />
                 <br />
                 <center><img src={logoEsteso} className="logo-esteso logo-esteso2" alt="Logo Esteso" /></center>
                 <h2 className='subtitle-1'><b><i>Elenco case disponibili</i></b></h2>
@@ -112,14 +112,12 @@ class HomeSearch extends Component {
                     <div className="houses-container">
                         {this.state.listaCase.map(house => (
                             <div key={house.Id_casa} className="house">
-                                <div className="house-image">
-                                    <Link to={`/Client/dettaglicasa?casaId=${house.Id_casa}&agentId=${house.IdAgente}`}>
-                                        <img src={house.ImageURL} alt="House" />
-                                    </Link>
+                                <div className="house-image" onClick={() => this.showPopup(`Per visualizzare i dettagli effettua il login.`)}>
+                                    <img src={house.ImageURL} alt="House" />
                                 </div>
                                 <div className="house-details">
-                                    <h3><i>
-                                    <Link to={`/Client/dettaglicasa?casaId=${house.Id_casa}&agentId=${house.IdAgente}`}>{house.Nome} </Link>
+                                    <h3><i onClick={() => this.showPopup(`Per visualizzare i dettagli effettua il login.`)}>
+                                        {house.Nome}
                                     </i></h3>
                                     <p><b><i>Indirizzo</i></b></p>
                                     <p>{house.Via}</p>
@@ -136,6 +134,18 @@ class HomeSearch extends Component {
                         {this.state.listaCase.length === 0 && <p>Nessun risultato trovato.</p>}
                     </div>
                 )}
+
+                {/* popup */}
+                {this.state.showPopup && (
+                    <div className="popup">
+                        <div className="popup-content">
+                            <span className="close-popup" onClick={() => this.setState({ showPopup: false })}>&times;</span>
+                            <p>{this.state.popupMessage}</p>
+                            <a href="/login">Accedi</a>
+                        </div>
+                    </div>
+                )}
+
                 <div>
                     <Footer footer={{ id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home' }} />
                 </div>
@@ -144,4 +154,4 @@ class HomeSearch extends Component {
     }
 }
 
-export default HomeSearch;
+export default HomeSearchGeneric;

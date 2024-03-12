@@ -13,6 +13,22 @@ class RealHome extends Component {
         ]
     }
     
+    componentDidMount() {
+        if((UserProfile.getType() && !(localStorage.getItem('userType')==="logout"))) {
+            if (localStorage.getItem('userType') === "Admin") {
+                window.location.href = "/admin/admin";
+            } else {
+                if(localStorage.getItem('userType') === "Signup") {
+                    window.location.href = "/Client/homeClient";
+                }
+                else {
+                    window.location.href = "/agente/homeAgente";
+                }
+            }
+        } else {
+            return;
+        }
+    }
     render() {
         return (
             <>
