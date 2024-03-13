@@ -3,7 +3,6 @@ import AgenteBar from './AgenteBar';
 import Footer from '../components/Footer';
 import logoEsteso from '../components/pic/logo.png';
 import "../Client/HomeClient.css";
-import UserProfile from '../UserProfile';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -13,8 +12,8 @@ function InfoAgente() {
     useEffect(() => {
         async function fetchUserInfo() {
             try {
-                const userName = UserProfile.getName();
-                if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+                
+                if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
                     // Reindirizza l'utente alla pagina principale se il nome è vuoto
                     window.location.href = "/";
                 } else {

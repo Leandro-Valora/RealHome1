@@ -16,7 +16,7 @@ function ModificaAgent() {
         Id_agente:''
     });
     const [successMessage, setSuccessMessage] = React.useState('');
-    const [errors] = React.useState({
+    const [errors, setErrors] = React.useState({
         nome: '',
         cognome: '',
         email: '',
@@ -25,8 +25,7 @@ function ModificaAgent() {
     });
 
     React.useEffect(() => {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !(localStorage.getItem('userName'))) {
+        if (localStorage.getItem('userName')==="logout" || !(localStorage.getItem('userName'))) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -58,26 +57,60 @@ function ModificaAgent() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        if (!Object.values(agentDet).some(value => value === "")) {
-            console.log("agentdet: " + JSON.stringify(agentDet));
+    
+        // Verifica se ci sono campi vuoti
+        let hasErrors = false;
+        const newErrors = { ...errors };
+    
+        Object.keys(agentDet).forEach((key) => {
+            if (!agentDet[key]) {
+                newErrors[key.toLowerCase()] = `Il campo ${key} è richiesto.`;
+                hasErrors = true;
+            }
+        });
+    
+        // Verifica la lunghezza del numero di cellulare
+        if (agentDet.Numero_cell.length < 6 || agentDet.Numero_cell.length > 12) {
+            newErrors.numero_cell = 'Il numero di cellulare deve essere compreso tra 6 e 12 caratteri.';
+            hasErrors = true;
+        }
+        if (agentDet.Password.length < 8 || agentDet.Password.length > 30) {
+            newErrors.password = 'La password deve essere compresa tra 8 e 30 caratteri.';
+            hasErrors = true;
+        } else if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$/.test(agentDet.Password)) {
+            newErrors.password = 'La password deve essere alfanumerica (contenere almeno una lettera e un numero).';
+            hasErrors = true;
+        }
+    
+        if (!hasErrors) {
             axios.post('http://localhost:8081/agente/modificaAgente', agentDet)
-            .then(response => {
-                if(response.data.status === "Success") {
-                    UserProfile.setName(agentDet.Name);
-                    setSuccessMessage("Utente modificato con successo!");
-                } else {
-                    console.log("Failed to update user");
-                }
-            })
-            .catch(error => {
-                console.log("Error updating user:", error);
-            });
+                .then(response => {
+                    if(response.data.status === "Success") {
+                        UserProfile.setName(agentDet.Nome);
+                        setSuccessMessage("Utente modificato con successo!");
+                    } else {
+                        console.log("Failed to update user");
+                    }
+                })
+                .catch(error => {
+                    console.log("Error updating user:", error);
+                });
+        } else {
+            // Aggiornamento dell'interfaccia con i messaggi di errore
+            setErrors(newErrors);
         }
     };
+    
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+    
+        // Pulizia degli errori quando si cambia un campo
+        const errorsCopy = { ...errors };
+        errorsCopy[name.toLowerCase()] = '';
+        setErrors(errorsCopy);
+    
         setAgent(prevAgentDet => ({
             ...prevAgentDet,
             [name]: value

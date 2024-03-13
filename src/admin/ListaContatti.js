@@ -1,19 +1,18 @@
 import React from 'react';
 import AdBar from '../admin/AdBar.js';
 import Footer from '../components/Footer';
-import UserProfile from '../UserProfile';
 import axios from 'axios';
 
 class ListaContatti extends React.Component {
     state = {
         footers: [
             { id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home'}        
-        ]
+        ],
+        contattoToDelete: ''
     }
 
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -38,6 +37,40 @@ class ListaContatti extends React.Component {
         }
     }
 
+    handleDeleteContatto = (contatto) => {
+        this.setState({ contattoToDelete: contatto });
+    }
+
+    confirmDeleteContatto = () => {
+        const contattoId = this.state.contattoToDelete.Id_contatto;
+        axios.post('http://localhost:8081/info/DeleteEmail', { Id_contatto: contattoId })
+            .then(resp => {
+                if (resp.data.status === "Success") {
+                    // Richiama la funzione per ottenere la lista aggiornata degli utenti
+                    axios.post('http://localhost:8081/info/recive-email')
+                        .then(response => {
+                            if(response.data.status === "Success") {
+                                if (Array.isArray(response.data.messages)) {
+                                    this.setState({ messages: response.data.messages, contattoToDelete: null });
+                                } else {
+                                    console.log("messages data is not an array");
+                                }
+                            } else {
+                                console.log("Failed to fetch messages");
+                            }
+                        })
+                        .catch(error => {
+                            console.log("Error fetching messages:", error);
+                        });
+                } else {
+                    console.log("Failed to delete messages");
+                }
+            })
+            .catch(error => {
+                console.log("Error deleting messages:", error);
+            });
+    }
+
     render() {
         return (
             <>
@@ -57,7 +90,8 @@ class ListaContatti extends React.Component {
                                 <th scope="col">NOME</th>
                                 <th scope="col">EMAIL</th>
                                 <th scope="col">DATA INVIO</th>
-                                <th scope="col">Messaggio</th>
+                                <th scope="col">MESSAGGIO</th>
+                                <th scope="col">ELIMINA</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,13 +103,26 @@ class ListaContatti extends React.Component {
                                         <td>{new Date(contatto.Data_messaggio).toLocaleString('it-IT', {year:'numeric', month:'2-digit', day:'2-digit', 
                                         hour:'2-digit', minute:'2-digit', timeZone:'UTC'})}</td>
                                         <td>{contatto.Messaggio}</td>
+                                        <td>
+                                            <button onClick={() => this.handleDeleteContatto(contatto)}>Elimina</button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </main>
                 </div>
-                {/* FINE */}
+
+                {this.state.contattoToDelete && (
+                    <div className="popup">
+                        <div className="popup-inner">
+                            <p>Sei sicuro di voler eliminare il messaggio?</p>
+                            <button onClick={this.confirmDeleteContatto}>Conferma</button>
+                            <button onClick={() => this.setState({ contattoToDelete: null })}>Annulla</button>
+                        </div>
+                    </div>
+                )}
+
                 {this.state.footers.map(footer => (
                     <Footer
                         key={footer.id}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
 import axios from 'axios';
 import './Stile.css';
 import { Link } from 'react-router-dom';
@@ -26,8 +25,7 @@ class AddImageCasa extends Component {
     }
 
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (!localStorage.getItem('userName') || localStorage.getItem('userName')==="logout") {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         }
@@ -65,10 +63,18 @@ class AddImageCasa extends Component {
                         });
                     } else {
                         console.log("Failed to fetch casa");
+                        this.setState({ 
+                            successMessage: "Qualcosa non va!",
+                            showMessage: true
+                        });
                     }
                 })
                 .catch(error => {
                     console.log("Error fetching case:", error);
+                    this.setState({ 
+                        successMessage: "Qualcosa non va!",
+                        showMessage: true
+                    });
                 });
         }
     };
@@ -92,7 +98,7 @@ class AddImageCasa extends Component {
                 <br />                     
                 <div>
                     <header>
-                        <h2 className='titolo-1'><center>Aggiungi immagine interni casa</center></h2>
+                        <h2 className='titolo-1'><center>Aggiungi immagine interni case</center></h2>
                     </header>
                     <br />
                     <main>
@@ -119,12 +125,12 @@ class AddImageCasa extends Component {
                                     
                                     <div className="login-form-group">
                                         <label htmlFor="immagine">
-                                            <strong>Immagine Copertina</strong>
+                                            <strong>Immagine Interni</strong>
                                         </label>
                                         <input
                                             type="text"
                                             name="immagine"
-                                            placeholder="Inserisci URL Casa"
+                                            placeholder="Inserisci URL image"
                                             onChange={handleInput}
                                             className="form-control rounded-0"
                                         />

@@ -19,14 +19,14 @@ function Login() {
 
     useEffect(() => {
         const checkLoggedIn = () => {
-            if (UserProfile.getName()==="generic" || UserProfile.getName()==="logout") {
+            if (UserProfile.getName()==="generic" || UserProfile.getName()==="logout" || !localStorage.getItem('userName')) {
                 navigate("/Login"); // Reindirizzo alla pagina principale se l'utente è già loggato
             }
             else {
                 if(UserProfile.getType() === "Admin") {
                     navigate("/admin/Admin");
                 }
-                else {
+                else if(UserProfile.getType() === "Signup") {
                     navigate("/Client/homeClient");
                 }
             }
@@ -55,7 +55,8 @@ function Login() {
                     localStorage.removeItem('userName');    //svuoto contenuto
                     localStorage.setItem('userName', nameUser);
                     localStorage.setItem('userType', typeUser);
-
+                    //console.log("variabile locale: " + localStorage.getItem('userName'));
+                    
                     if(res.data.type === "Admin") {
                         navigate("/admin/Admin");
                     }

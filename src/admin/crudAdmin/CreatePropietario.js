@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
 import ValidationEmail from '../../EmailValidation';
 import axios from 'axios';
 
@@ -22,12 +21,12 @@ class CreatePropierario extends Component {
             numero_cell: ''
         },
         successMessage: '',
-        showMessage: false
+        showMessage: false, 
+        showMessageError: false
     }
 
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         }
@@ -38,36 +37,75 @@ class CreatePropierario extends Component {
         const ValidationEmailErrors = ValidationEmail(this.state.values);
         this.setState({ errors: ValidationEmailErrors });
         
-        if (!Object.values(ValidationEmailErrors).some(error => error !== "") && !Object.values(this.state.values).some(value => value === "")) {
-            axios.post('http://localhost:8081/admin/crudAdmin/createPropietario', this.state.values)
+        const { values } = this.state;
+        const numeroCell = values.numero_cell.trim();
+
+        if (!Object.values(ValidationEmailErrors).some(error => error !== "") && 
+        !Object.values(values).some(value => value === "") && numeroCell.length >= 6 && numeroCell.length <= 12) {
+            axios.post('http://localhost:8081/admin/crudAdmin/createPropietario', values)
                 .then(response => {
                     if(response.data.status === "Success") {
                         this.setState({ 
                             successMessage: "Propietario creato con successo!",
-                            showMessage: true
+                            showMessage: true,
+                            showMessageError: false
                         });
                     } else {
                         console.log("Failed to fetch propietario");
+                        this.setState({ 
+                            successMessage: "Qualcosa è andato storto!",
+                            showMessage: false,
+                            showMessageError: true
+                        });
                     }
                 })
                 .catch(error => {
                     console.log("Error fetching propietario:", error);
+                    this.setState({ 
+                        successMessage: "Prova a cambiare email!",
+                        showMessage: false,
+                        showMessageError: true
+                    });
                 });
         }
     };
+    
+    
 
     handleInput = (event) => {
         const { name, value } = event.target;
+        let newValue = value;
+        // Verifica se il campo è "numero_cell" e applica la validazione
+        if (name === "numero_cell") {
+            // Rimuovi spazi bianchi
+            newValue = value.trim();
+            // Verifica la lunghezza del numero di telefono
+            if (newValue.length < 6 || newValue.length > 12) {
+                this.setState(prevState => ({
+                    errors: {
+                        ...prevState.errors,
+                        [name]: "Il numero di telefono deve essere compreso tra 6 e 12 caratteri."
+                    }
+                }));
+                return; // Interrompi la validazione
+            }
+        }
+        // Aggiorna lo stato con il nuovo valore e cancella gli eventuali errori precedenti
         this.setState(prevState => ({
             values: {
                 ...prevState.values,
-                [name]: value
+                [name]: newValue
+            },
+            errors: {
+                ...prevState.errors,
+                [name]: "" // Cancella eventuali errori precedenti
             }
         }));
     };
+    
 
     render() {
-        const { successMessage, showMessage, errors } = this.state;
+        const { successMessage, showMessageError, showMessage, errors } = this.state;
         const { handleInput, handleSubmit } = this;
         return (
             <>
@@ -82,6 +120,7 @@ class CreatePropierario extends Component {
                         <div className="login-form-container">
                             <div className="login-form">
                                 <p>{showMessage && <span className="text-success">{successMessage}</span>}</p>
+                                <p>{showMessageError && <span className="text-danger">{successMessage}</span>}</p>
                                 <form onSubmit={handleSubmit}>
                                     <div className="login-form-group">
                                         <label htmlFor="nome">

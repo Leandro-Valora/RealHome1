@@ -4,7 +4,7 @@ import UserProfile from '../UserProfile';
 function FrmLogin() {
     // Se l'utente è già loggato, reindirizza alla pagina
     console.log("frm login-> " + localStorage.getItem('userName'));
-    if (!(localStorage.getItem('userName') === "logout")) {
+    if (!(localStorage.getItem('userName') === "logout") && !(localStorage.getItem('userName')===null)) {
 
         const handleLogout = () => {
             UserProfile.setName("logout");

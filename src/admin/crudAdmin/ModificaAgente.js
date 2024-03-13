@@ -2,7 +2,6 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
 import axios from 'axios';
 import "../StileTabella.css";
 
@@ -12,20 +11,21 @@ function ModificaAgente() {
         Nome: '',
         Cognome: '',
         Email: '',
+        Password: '',
         Numero_cell: '',
         Id_agente:''
     });
     const [successMessage, setSuccessMessage] = React.useState('');
-    const [errors] = React.useState({
+    const [errors, setErrors] = React.useState({
         nome: '',
         email: '',
+        password: '',
         cognome: '',
         numero_cell: ''
     });
 
     React.useEffect(() => {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -57,27 +57,70 @@ function ModificaAgente() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        if (!Object.values(agentDet).some(value => value === "")) {
-            axios.post('http://localhost:8081/admin/crudAdmin/modificaAgente', agentDet)
-            .then(response => {
-                if(response.data.status === "Success") {
-                    setSuccessMessage("Agente modificato con successo!");
-                } else {
-                    console.log("Failed to update agent");
-                }
-            })
-            .catch(error => {
-                console.log("Error updating agent:", error);
-            });
+    
+        // Verifica se ci sono errori nel campo Numero_cell
+        if (!Object.values(errors).some(error => error !== '')) {
+            // Controlla se ci sono campi vuoti
+            if (!Object.values(agentDet).some(value => value === "")) {
+                axios.post('http://localhost:8081/admin/crudAdmin/modificaAgente', agentDet)
+                .then(response => {
+                    if(response.data.status === "Success") {
+                        setSuccessMessage("Agente modificato con successo!");
+                    } else {
+                        console.log("Failed to update agent");
+                    }
+                })
+                .catch(error => {
+                    console.log("Error updating agent:", error);
+                });
+            }
+        } else {
+            console.log("Correggere gli errori nel modulo prima di inviare");
         }
     };
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        let errorMessage = '';
+    
+        if (name === 'Numero_cell') {
+            // Verifica se il valore non è un numero o se la lunghezza non è compresa tra 6 e 12
+            if (!/^\d+$/.test(value) || value.length < 6 || value.length > 12) {
+                errorMessage = 'Il numero di cellulare deve contenere solo numeri e essere compreso tra 6 e 12 cifre.';
+            }
+        } else if (name === 'Nome') {
+            // Verifica se il campo nome è vuoto
+            if (value.trim() === '') {
+                errorMessage = 'Il campo nome non può essere vuoto.';
+            }
+        } else if (name === 'Cognome') {
+            // Verifica se il campo cognome è vuoto
+            if (value.trim() === '') {
+                errorMessage = 'Il campo cognome non può essere vuoto.';
+            }
+        } else if (name === 'Email') {
+            // Verifica se l'email è nel formato corretto
+            if (!/\S+@\S+\.\S+/.test(value)) {
+                errorMessage = 'Inserisci un indirizzo email valido.';
+            }
+        } else if (name === 'Password') {
+            // Verifica se la password è nel formato corretto
+            if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value)) {
+                errorMessage = 'Inserisci una password valida.';
+            }
+        }
+
+
         setAgent(prevUserDet => ({
             ...prevUserDet,
             [name]: value
+        }));
+    
+        // Imposta l'errore nel campo corrispondente
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [name.toLowerCase()]: errorMessage
         }));
     };
     
@@ -147,6 +190,20 @@ function ModificaAgente() {
                                         className="form-control rounded-0"
                                     />
                                     {errors.email && <span className="text-danger">{errors.email}</span>}
+                                </div>
+                                <div className="login-form-group">
+                                    <label htmlFor="password">
+                                        <strong>Password</strong>
+                                    </label>
+                                    <input
+                                        type="password"
+                                        name="Password"
+                                        id="password"
+                                        value={agentDet.Password || ''}
+                                        onChange={handleChange}
+                                        className="form-control rounded-0"
+                                    />
+                                    {errors.password && <span className="text-danger">{errors.password}</span>}
                                 </div>
                                 <button type="submit" className="login-btn btn btn-success"> Aggiungi </button>
                             </form>

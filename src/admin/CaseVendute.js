@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import AdBar from './AdBar';
 import Footer from '../components/Footer';
-import UserProfile from '../UserProfile';
 import axios from 'axios';
 import "./StileTabella.css";
 
@@ -14,8 +13,7 @@ class CaseVendute extends Component {
     }
 
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -103,7 +101,8 @@ class CaseVendute extends Component {
                                         <td>{venduta.Nome.charAt(0).toUpperCase() + venduta.Nome.slice(1)}</td>
                                         <td>{venduta.Via} </td>
                                         <td>
-                                            <button onClick={() => this.handleDeleteCasaVenduta(venduta)}>Elimina</button>
+                                            {/* <button onClick={() => this.handleDeleteCasaVenduta(venduta)}>Elimina</button> */}
+                                            <button onClick={() => this.handleDeleteCasaVenduta(venduta)} className={this.state.CasaSoldToDelete ? "" : "opacizzato"}>Elimina</button>
                                         </td>
                                     </tr>
                                 ))}

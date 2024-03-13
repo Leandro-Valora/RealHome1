@@ -4,7 +4,6 @@ import AdBar from './AdBar';
 import Footer from '../components/Footer';
 import logoEsteso from '../components/pic/logo.png';
 import '../Client/HomeSearch.css';
-import UserProfile from '../UserProfile';
 import { Link } from 'react-router-dom';
 
 class HomeSearchAdmin extends Component {
@@ -17,8 +16,7 @@ class HomeSearchAdmin extends Component {
     }
 
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !(localStorage.getItem('userName'))) {
+        if (localStorage.getItem('userName')==="logout" || !(localStorage.getItem('userName'))) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -129,7 +127,7 @@ class HomeSearchAdmin extends Component {
                                     <p>{house.Citta}</p>
                                     <p><b><i>Descrizione</i></b></p>
                                     <p>{house.Descrizione}</p>
-                                    <p><b><i>Prezzo:</i></b> € {parseFloat(house.Prezzo).toFixed(6)} </p>
+                                    <p><b><i>Prezzo:</i></b> € {parseFloat(house.Prezzo).toFixed(2)} </p>
                                 </div>
                             </div>
                         ))}

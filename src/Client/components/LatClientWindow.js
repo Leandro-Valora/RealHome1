@@ -3,7 +3,7 @@ import UserProfile from '../../UserProfile';
 
 function LatClientWindow() {
     const navigate = useNavigate();
-
+    
     const handleLogout = () => {
         UserProfile.setName("logout");
         const localUser = "logout";

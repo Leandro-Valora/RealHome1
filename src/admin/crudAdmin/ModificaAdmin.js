@@ -2,7 +2,6 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
 import axios from 'axios';
 import "../StileTabella.css";
 
@@ -18,7 +17,7 @@ function ModificaAdmin() {
         Id_admin:''
     });
     const [successMessage, setSuccessMessage] = React.useState('');
-    const [errors] = React.useState({
+    const [errors, setErrors] = React.useState({
         nome: '',
         email: '',
         cognome: '',
@@ -28,8 +27,7 @@ function ModificaAdmin() {
     });
 
     React.useEffect(() => {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -61,21 +59,42 @@ function ModificaAdmin() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        if (!Object.values(adminDet).some(value => value === "")) {
+    
+        const errorsCopy = { ...errors };
+    
+        // Controllo campi vuoti
+        Object.keys(adminDet).forEach(key => {
+            if (!adminDet[key]) {
+                errorsCopy[key.toLowerCase()] = `${key} è richiesto`;
+            } else {
+                errorsCopy[key.toLowerCase()] = '';
+            }
+        });
+    
+        // Controllo password alfanumerica e lunghezza
+        if (!/^(?=.*[a-zA-Z])(?=.*\d).{8,30}$/.test(adminDet.Password)) {
+            errorsCopy.password = 'La password deve contenere almeno una lettera e un numero, e essere lunga da 8 a 30 caratteri';
+        }
+    
+        // Aggiornamento dello stato degli errori
+        setErrors(errorsCopy);
+    
+        // Se non ci sono errori, procedi con la richiesta di modifica
+        if (!Object.values(errorsCopy).some(error => error)) {
             axios.post('http://localhost:8081/admin/crudAdmin/modificaAdmin', adminDet)
-            .then(response => {
-                if(response.data.status === "Success") {
-                    setSuccessMessage("Admin modificato con successo!");
-                } else {
-                    console.log("Failed to update admin");
-                }
-            })
-            .catch(error => {
-                console.log("Error updating admin:", error);
-            });
+                .then(response => {
+                    if (response.data.status === "Success") {
+                        setSuccessMessage("Admin modificato con successo!");
+                    } else {
+                        console.log("Failed to update admin");
+                    }
+                })
+                .catch(error => {
+                    console.log("Error updating admin:", error);
+                });
         }
     };
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -92,7 +111,7 @@ function ModificaAdmin() {
             <br />
             <div>
                 <header>
-                    <h1 className='titolo-1'><center>Modifica i campi degli Agenti Immobili</center></h1>
+                    <h1 className='titolo-1'><center>Modifica i campi degli Admin</center></h1>
                 </header>
                 <br />
                 <main>
@@ -137,6 +156,8 @@ function ModificaAdmin() {
                                             value={(adminDet.DataNascita ? new Date(adminDet.DataNascita).toISOString().split('T')[0] : '-') || ''}
                                             onChange={handleChange}
                                             className="form-control rounded-0"
+                                            min="1920-01-01"
+                                            max="2024-01-02"
                                         />
                                         {errors.dataNascita && <span className="text-danger">{errors.dataNascita}</span>}
                                     </div>
@@ -181,7 +202,7 @@ function ModificaAdmin() {
                                         />
                                         {errors.password && <span className="text-danger">{errors.password}</span>}
                                     </div>
-                                <button type="submit" className="login-btn btn btn-success"> Aggiungi </button>
+                                <button type="submit" className="login-btn btn btn-success"> Modifica </button>
                             </form>
                         </div>
                     </div>

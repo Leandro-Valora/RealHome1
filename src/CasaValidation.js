@@ -34,6 +34,10 @@ function CasaValidation(values) {
         error.descrizione = "campo descrizione vuoto";
     }
 
+    if(values.immagine === "") {
+        error.immagine = "campo immagine vuoto";
+    }
+
     return error;
 }
 

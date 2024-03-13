@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ClientBar from './components/ClientBar';
 import Footer from '../components/Footer';
-import UserProfile from '../UserProfile';
 import axios from 'axios';
 import './DettagliCasa.css';
 
@@ -31,8 +30,7 @@ function DettagliCasa() {
     const [showError, setShowError] = useState(false);
 
     React.useEffect(() => {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !(localStorage.getItem('userName'))) {
+        if (localStorage.getItem('userName')==="logout" || !(localStorage.getItem('userName'))) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -119,7 +117,15 @@ function DettagliCasa() {
         const agentId = searchParams1.get('agentId');
         const email = localStorage.getItem('emailId');
         const titoloCompleto = formData.titolo + " X " + casaDet.Nome;
-        console.log("titolo msg --> " + titoloCompleto);
+
+        setShowError(false);
+        setShowMessage(false);
+
+        // Controllo se i campi del modulo non sono vuoti
+        if (formData.titolo.trim() === '' || formData.descrizione.trim() === '') {
+            setShowError(true);
+            return; // Non inviare il modulo se i campi sono vuoti
+        }
         
         axios.post('http://localhost:8081/Client/InviaMessaggio', {
             Email_richiedente: email,
@@ -181,7 +187,7 @@ function DettagliCasa() {
                     <p><strong>Paese:</strong> {casaDet.Paese ? casaDet.Paese.charAt(0).toUpperCase() + casaDet.Paese.slice(1) : ''}</p>
                     <p><strong>Città:</strong> {casaDet.Citta ? casaDet.Citta.charAt(0).toUpperCase() + casaDet.Citta.slice(1) : ''}</p>
                     <p><strong>Via:</strong> {casaDet.Via ? casaDet.Via.charAt(0).toUpperCase() + casaDet.Via.slice(1) : ''}</p>
-                    <p><strong>Prezzo:</strong> € {casaDet.Prezzo}</p>
+                    <p><strong>Prezzo:</strong> € {parseFloat(casaDet.Prezzo).toFixed(2)}</p>
                     <p><strong>Descrizione:</strong></p><p>{casaDet.Descrizione}</p>
                     <br />
                     <h2 className='info-casa'>Agente Immobiliare</h2>
@@ -195,9 +201,9 @@ function DettagliCasa() {
                     <p>{showMessage && <span className="text-success">{formData.titolo} : inviato con successo</span>}</p>
                     <p>{showError && <span className="text-danger">Errore invio messaggio</span>}</p>
                         <form onSubmit={handleSubmit}>
-                            <label htmlFor="titolo">Titolo:</label><br />
+                            <label htmlFor="titolo">Oggetto:</label><br />
                             <input type="text" id="titolo" placeholder='Richiesta info...' name="titolo" value={formData.titolo} onChange={handleChange} /><br />
-                            <label htmlFor="descrizione">Descrizione:</label><br />
+                            <label htmlFor="descrizione">Messaggio:</label><br />
                             <textarea id="descrizione" placeholder='Vorrei fissare un appuntamento per...' name="descrizione" rows="4" cols="50" value={formData.descrizione} onChange={handleChange}></textarea><br />
                             <input type="submit" value="Invia" />
                         </form>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
 import Validation from '../../LoginValidation';
 import axios from 'axios';
 
@@ -21,12 +20,12 @@ class CreateUser extends Component {
             password: ''
         },
         successMessage: '',
-        showMessage: false
+        showMessage: false,
+        showMessageError: false
     }
 
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         }
@@ -43,16 +42,38 @@ class CreateUser extends Component {
                 if(response.data.status === "Success") {
                     this.setState({ 
                         successMessage: "Utente creato con successo!",
-                        showMessage: true
+                        showMessage: true,
+                        showMessageError: false
                     });
+                    this.clearFields();
                 } else {
                     console.log("Failed to fetch utenti");
+                    this.setState({ 
+                        errorMessage: "Qualcosa è andato storto! riprova.",
+                        showMessage: false,
+                        showMessageError: true
+                    });
                 }
             })
             .catch(error => {
                 console.log("Error fetching utenti:", error);
+                this.setState({ 
+                    errorMessage: "Email già esistente!",
+                    showMessage: false,
+                    showMessageError: true
+                });
             });
         }
+    };
+
+    clearFields = () => {
+        this.setState({
+            values: {
+                nome: '',
+                email: '',
+                password: ''
+            }
+        });
     };
 
     handleInput = (event) => {
@@ -66,7 +87,7 @@ class CreateUser extends Component {
     };
 
     render() {
-        const { successMessage, showMessage, errors } = this.state;
+        const { successMessage, errorMessage, showMessage, showMessageError, errors, values } = this.state;
         const { handleInput, handleSubmit } = this;
         return (
             <>
@@ -81,6 +102,7 @@ class CreateUser extends Component {
                         <div className="login-form-container">
                             <div className="login-form">
                                 <p>{showMessage && <span className="text-success">{successMessage}</span>}</p>
+                                <p>{showMessageError && <span className="text-danger">{errorMessage}</span>}</p>
                                 <form onSubmit={handleSubmit}>
                                     <div className="login-form-group">
                                         <label htmlFor="nome">
@@ -90,6 +112,7 @@ class CreateUser extends Component {
                                             type="text"
                                             name="nome"
                                             placeholder="enter name"
+                                            value={values.nome}
                                             onChange={handleInput}
                                             className="form-control rounded-0"
                                         />
@@ -103,6 +126,7 @@ class CreateUser extends Component {
                                             type="email"
                                             name="email"
                                             placeholder="enter email"
+                                            value={values.email}
                                             onChange={handleInput}
                                             className="form-control rounded-0"
                                         />
@@ -117,6 +141,7 @@ class CreateUser extends Component {
                                             placeholder="enter password"
                                             id="password"
                                             name="password"
+                                            value={values.password}
                                             onChange={handleInput}
                                             className="form-control rounded-0"
                                         />

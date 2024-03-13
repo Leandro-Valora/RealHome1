@@ -85,3 +85,9 @@
 .stretta {
   width: 50px;
 }
+
+.opacizzato {
+  opacity: 0.5; /* Imposta l'opacità a 50% */
+  cursor: not-allowed; /* Cambia il cursore quando il pulsante è disabilitato */
+  /* Aggiungi altri stili desiderati per indicare che il pulsante è disabilitato */
+}

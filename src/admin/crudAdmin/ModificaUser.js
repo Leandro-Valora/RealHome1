@@ -2,28 +2,26 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
 import axios from 'axios';
 import "../StileTabella.css";
 
 function ModificaUser() {
     const location = useLocation();
-    const [userDet, setUsers] = React.useState({
+    const [userDet, setUserDet] = React.useState({
         Name: '',
         Email: '',
         Password: '',
-        Id_signup:''
+        Id_signup: ''
     });
     const [successMessage, setSuccessMessage] = React.useState('');
-    const [errors] = React.useState({
+    const [errors, setErrors] = React.useState({
         nome: '',
         email: '',
         password: ''
     });
 
     React.useEffect(() => {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -37,7 +35,7 @@ function ModificaUser() {
                     }
                 }).then(response => {
                     if(response.data.status === "Success") {
-                        setUsers(response.data.userDetails[0]);
+                        setUserDet(response.data.userDetails[0]);
                     } else {
                         console.log("Failed to fetch user details");
                     }
@@ -50,35 +48,59 @@ function ModificaUser() {
             }
         }
     }, [location]);
-    
-    
+
+    const validateForm = () => {
+        let formIsValid = true;
+        const newErrors = {};
+
+        if (!userDet.Name.trim()) {
+            formIsValid = false;
+            newErrors.nome = "Il campo Nome è vuoto";
+        }
+
+        if (!userDet.Email.trim()) {
+            formIsValid = false;
+            newErrors.email = "Il campo Email è vuoto";
+        }
+
+        if (!userDet.Password.trim()) {
+            formIsValid = false;
+            newErrors.password = "Il campo Password è vuoto";
+        } else if (!/^[a-zA-Z0-9]{8,30}$/.test(userDet.Password)) {
+            formIsValid = false;
+            newErrors.password = "La password deve essere alfanumerica e avere lunghezza compresa tra 8 e 30 caratteri";
+        }
+
+        setErrors(newErrors);
+        return formIsValid;
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if (!Object.values(userDet).some(value => value === "")) {
+        if (validateForm()) {
             axios.post('http://localhost:8081/admin/crudAdmin/modificaUser', userDet)
-            .then(response => {
-                if(response.data.status === "Success") {
-                    setSuccessMessage("Utente modificato con successo!");
-                } else {
-                    console.log("Failed to update user");
-                }
-            })
-            .catch(error => {
-                console.log("Error updating user:", error);
-            });
+                .then(response => {
+                    if (response.data.status === "Success") {
+                        setSuccessMessage("Utente modificato con successo!");
+                    } else {
+                        console.log("Failed to update user");
+                    }
+                })
+                .catch(error => {
+                    console.log("Error updating user:", error);
+                });
         }
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUsers(prevUserDet => ({
+        setUserDet(prevUserDet => ({
             ...prevUserDet,
             [name]: value
         }));
     };
-    
+
     return (
         <>
             <AdBar />

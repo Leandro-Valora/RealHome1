@@ -127,7 +127,7 @@ class HomeSearchGeneric extends Component {
                                     <p>{house.Citta}</p>
                                     <p><b><i>Descrizione</i></b></p>
                                     <p>{house.Descrizione}</p>
-                                    <p><b><i>Prezzo:</i></b> € {parseFloat(house.Prezzo).toFixed(6)} </p>
+                                    <p><b><i>Prezzo:</i></b> € {parseFloat(house.Prezzo).toFixed(2)} </p>
                                 </div>
                             </div>
                         ))}

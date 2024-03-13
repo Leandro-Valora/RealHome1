@@ -1,7 +1,6 @@
 import React from 'react';
 import AdBar from '../admin/AdBar.js';
 import Footer from '../components/Footer';
-import UserProfile from '../UserProfile';
 import villa1 from "../ville/avi.jpg";
 import villa2 from "../ville/dinuka.jpg";
 import villa3 from "../ville/fern.jpg";
@@ -14,8 +13,7 @@ class Admin extends React.Component {
     }
 
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (!localStorage.getItem('userName') || localStorage.getItem('userName')==="logout") {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         }

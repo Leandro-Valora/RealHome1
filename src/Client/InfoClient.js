@@ -3,7 +3,6 @@ import ClientBar from './components/ClientBar';
 import Footer from '../components/Footer';
 import logoEsteso from '../components/pic/logo.png';
 import "./HomeClient.css";
-import UserProfile from '../UserProfile';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -13,8 +12,7 @@ function InfoClient() {
     useEffect(() => {
         async function fetchUserInfo() {
             try {
-                const userName = UserProfile.getName();
-                if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+                if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
                     // Reindirizza l'utente alla pagina principale se il nome è vuoto
                     window.location.href = "/";
                 } else {
@@ -61,7 +59,7 @@ function InfoClient() {
                     )}
                     <br />
                     <div className="button-container">
-                        <Link to={`/Client/modificaClient?userId=${UserProfile.getId()}`}><button>Aggiorna info</button></Link>
+                        <Link to={`/Client/modificaClient?userId=${localStorage.getItem('userId')}`}><button>Aggiorna info</button></Link>
                     </div>
                 </main>
             </div>

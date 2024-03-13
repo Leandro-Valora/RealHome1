@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
 import Validation from '../../LoginValidation';
 import axios from 'axios';
 
@@ -27,12 +26,12 @@ class CreateAdmin extends Component {
             password: ''
         },
         successMessage: '',
-        showMessage: false
+        showMessage: false,
+        showMessageError: false
     }
 
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (!localStorage.getItem('userName') || localStorage.getItem('userName')==="logout") {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         }
@@ -49,14 +48,25 @@ class CreateAdmin extends Component {
                     if(response.data.status === "Success") {
                         this.setState({ 
                             successMessage: "Amministratore creato con successo!",
-                            showMessage: true
+                            showMessage: true,
+                            showMessageError: false
                         });
                     } else {
                         console.log("Failed to fetch admins");
+                        this.setState({ 
+                            successMessage: "Qualcosa è andato storto! riprova.",
+                            showMessage: false,
+                            showMessageError: true
+                        });
                     }
                 })
                 .catch(error => {
                     console.log("Error fetching admins:", error);
+                    this.setState({ 
+                        successMessage: "Prova con un'altra email!",
+                        showMessage: false,
+                        showMessageError: true
+                    });
                 });
         }
     };
@@ -72,7 +82,7 @@ class CreateAdmin extends Component {
     };
 
     render() {
-        const { successMessage, showMessage, errors } = this.state;
+        const { successMessage, showMessageError, showMessage, errors } = this.state;
         const { handleInput, handleSubmit } = this;
         return (
             <>
@@ -87,6 +97,7 @@ class CreateAdmin extends Component {
                         <div className="login-form-container">
                             <div className="login-form">
                                 <p>{showMessage && <span className="text-success">{successMessage}</span>}</p>
+                                <p>{showMessageError && <span className="text-danger">{successMessage}</span>}</p>
                                 <form onSubmit={handleSubmit}>
                                     <div className="login-form-group">
                                         <label htmlFor="nome">
@@ -123,6 +134,8 @@ class CreateAdmin extends Component {
                                             name="dataNascita"
                                             onChange={handleInput}
                                             className="form-control rounded-0"
+                                            min="1920-01-01"
+                                            max="2024-01-02"
                                         />
                                         {errors.dataNascita && <span className="text-danger">{errors.dataNascita}</span>}
                                     </div>

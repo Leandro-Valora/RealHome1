@@ -1,8 +1,7 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
 import axios from 'axios';
 import "../StileTabella.css";
 
@@ -37,8 +36,7 @@ function ModificaCasa() {
     const [agenti, setAgenti] = React.useState([]);
 
     React.useEffect(() => {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -277,7 +275,8 @@ function ModificaCasa() {
                                         ></textarea>
                                         {errors.descrizione && <span className="text-danger">{errors.descrizione}</span>}
                                     </div>
-                                    <button type="submit" className="login-btn btn btn-success"> Create </button>
+                                    <button type="submit" className="login-btn btn btn-success"> Modifica </button>
+                                    <Link to="/admin/listaCase"><button type="submit" className="login-btn btn "> Indietro </button></Link>
                                 </form>
                         </div>
                     </div>

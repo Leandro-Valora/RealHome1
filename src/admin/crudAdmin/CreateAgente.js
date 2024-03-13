@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
 import ValidationEmail from '../../EmailValidation';
 import axios from 'axios';
 
@@ -14,20 +13,23 @@ class CreateAgente extends Component {
             nome: '',
             cognome: '',
             email: '',
+            password: '',
             numero_cell: ''
         },
         errors: {
             nome: '',
             cognome: '',
+            email: '',
+            password: '',
             numero_cell: ''
         },
         successMessage: '',
-        showMessage: false
+        showMessage: false,
+        showMessageError: false
     }
 
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (!localStorage.getItem('userName') || localStorage.getItem('userName')==="logout") {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         }
@@ -44,30 +46,73 @@ class CreateAgente extends Component {
                     if(response.data.status === "Success") {
                         this.setState({ 
                             successMessage: "Agente creato con successo!",
-                            showMessage: true
+                            showMessage: true,
+                            showMessageError: false
                         });
+                        this.resetFormValues(); // Chiamata alla funzione per reimpostare i valori dei campi del modulo
                     } else {
                         console.log("Failed to fetch agente");
+                        this.setState({ 
+                            successMessage: "Qualcosa è andato storto! Riprova.",
+                            showMessage: false,
+                            showMessageError: true
+                        });
                     }
                 })
                 .catch(error => {
                     console.log("Error fetching agenti:", error);
+                    this.setState({ 
+                        successMessage: "Errore, email già esistente!",
+                        showMessage: false,
+                        showMessageError: true
+                    });
                 });
         }
     };
 
+    validatePassword = (password) => {
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$/;
+        return passwordRegex.test(password);
+    };
+    
     handleInput = (event) => {
         const { name, value } = event.target;
+        let errors = { ...this.state.errors };
+    
+        if (name === "password") {
+            errors.password = this.validatePassword(value) ? "" : "La password deve contenere almeno 8 caratteri e max 30, di cui almeno una lettera e un numero.";
+        }
+    
         this.setState(prevState => ({
             values: {
                 ...prevState.values,
                 [name]: value
-            }
+            },
+            errors: errors
         }));
     };
 
+    resetFormValues = () => {
+        this.setState({
+            values: {
+                nome: '',
+                cognome: '',
+                email: '',
+                password: '',
+                numero_cell: ''
+            },
+            errors: {
+                nome: '',
+                cognome: '',
+                email: '',
+                password: '',
+                numero_cell: ''
+            }
+        });
+    };
+
     render() {
-        const { successMessage, showMessage, errors } = this.state;
+        const { successMessage, showMessage, showMessageError, errors } = this.state;
         const { handleInput, handleSubmit } = this;
         return (
             <>
@@ -82,6 +127,7 @@ class CreateAgente extends Component {
                         <div className="login-form-container">
                             <div className="login-form">
                                 <p>{showMessage && <span className="text-success">{successMessage}</span>}</p>
+                                <p>{showMessageError && <span className="text-danger">{successMessage}</span>}</p>
                                 <form onSubmit={handleSubmit}> 
                                     <div className="login-form-group">
                                         <label htmlFor="nome">
@@ -92,6 +138,7 @@ class CreateAgente extends Component {
                                             name="nome"
                                             placeholder="enter name"
                                             onChange={handleInput}
+                                            value={this.state.values.nome} // Imposta il valore del campo dallo stato
                                             className="form-control rounded-0"
                                         />
                                         {errors.nome && <span className="text-danger">{errors.nome}</span>}
@@ -105,6 +152,7 @@ class CreateAgente extends Component {
                                             name="cognome"
                                             placeholder="enter surname"
                                             onChange={handleInput}
+                                            value={this.state.values.cognome}
                                             className="form-control rounded-0"
                                         />
                                         {errors.cognome && <span className="text-danger">{errors.cognome}</span>}
@@ -118,6 +166,7 @@ class CreateAgente extends Component {
                                             name="numero_cell"
                                             placeholder="enter tel."
                                             onChange={handleInput}
+                                            value={this.state.values.numero_cell}
                                             className="form-control rounded-0"
                                         />
                                         {errors.numero_cell && <span className="text-danger">{errors.numero_cell}</span>}
@@ -131,9 +180,25 @@ class CreateAgente extends Component {
                                             name="email"
                                             placeholder="enter email"
                                             onChange={handleInput}
+                                            value={this.state.values.email}
                                             className="form-control rounded-0"
                                         />
                                         {errors.email && <span className="text-danger">{errors.email}</span>}
+                                    </div>
+                                    <div className="login-form-group">
+                                        <label htmlFor="password">
+                                            <strong>Password</strong>
+                                        </label>
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            id="password"
+                                            placeholder='enter password'
+                                            onChange={handleInput}
+                                            value={this.state.values.password}
+                                            className="form-control rounded-0"
+                                        />
+                                        {errors.password && <span className="text-danger">{errors.password}</span>}
                                     </div>
                                     <button type="submit" className="login-btn btn btn-success"> Aggiungi </button>
                                 </form>

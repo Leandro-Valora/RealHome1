@@ -34,6 +34,9 @@ function ClientBar() {
                             <li className="nav-item">
                                 <Link to="/info/contatti" className="btn btn-outline-primary"> Contatti </Link>
                             </li>
+                            <li className="nav-item">
+                                <Link to="/Client/messaggi" className="btn btn-outline-primary"> Messaggi </Link>
+                            </li>
                         </ul>
                     </div>
                     <br />

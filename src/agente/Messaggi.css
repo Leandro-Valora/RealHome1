@@ -1,0 +1,48 @@
+.popup-inner form {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.popup-inner label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.popup-inner input[type="text"],
+.popup-inner textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.popup-inner input[type="submit"],
+.popup-inner button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.popup-inner input[type="submit"]:hover,
+.popup-inner button:hover {
+    background-color: #45a049;
+}
+
+.popup-inner button {
+    background-color: #f44336;
+    margin-right: 10px;
+}
+
+.popup-inner button:last-child {
+    background-color: #ccc;
+}
+
+.popup-inner button:last-child:hover {
+    background-color: #bbb;
+}

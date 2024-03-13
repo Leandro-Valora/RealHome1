@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -12,8 +11,7 @@ const ModificaImage = () => {
     const location = useLocation();
 
     useEffect(() => {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -42,8 +40,9 @@ const ModificaImage = () => {
 
 
     const confirmDeleteCasa = () => {
-        const casaId = imageToDelete.Id_casa;
-        axios.post('http://localhost:8081/admin/ImageDelete', { Id_casa: casaId })
+        const imageId = imageToDelete.Id_immagine;
+        if(imageId) {
+            axios.post('http://localhost:8081/admin/ImageDelete', { Id_immagine: imageId })
             .then(resp => {
                 if (resp.data.status === "Success") {
                     // Rimuovi l'immagine eliminata dallo stato delle immagini
@@ -58,6 +57,7 @@ const ModificaImage = () => {
             .catch(error => {
                 console.log("Error deleting case:", error);
             });
+        } 
     }
 
     const handleDeleteImage = (img) => {

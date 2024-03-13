@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import AdBar from './AdBar';
 import Footer from '../components/Footer';
-import UserProfile from '../UserProfile';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import "./StileTabella.css";
@@ -15,8 +14,7 @@ class ListaAgente extends Component {
     }
 
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -55,7 +53,7 @@ class ListaAgente extends Component {
                         .then(response => {
                             if(response.data.status === "Success") {
                                 if (Array.isArray(response.data.agente)) {
-                                    this.setState({ users: response.data.agente, agenteToDelete: null });
+                                    this.setState({ agente: response.data.agente, agenteToDelete: null });
                                 } else {
                                     console.log("agente data is not an array");
                                 }
@@ -96,6 +94,7 @@ class ListaAgente extends Component {
                                 <th scope="col">NOME</th>
                                 <th scope="col">COGNOME</th>
                                 <th scope="col">EMAIL</th>
+                                <th scope="col">PASSWORD</th>
                                 <th scope="col">NUMERO TEL.</th>
                                 <th scope="col">MODIFICA</th>
                                 <th scope="col">ELIMINA</th>
@@ -108,6 +107,7 @@ class ListaAgente extends Component {
                                         <td>{agent.Nome.charAt(0).toUpperCase() + agent.Nome.slice(1)}</td>
                                         <td>{agent.Cognome.charAt(0).toUpperCase() + agent.Cognome.slice(1)}</td>
                                         <td>{agent.Email}</td>
+                                        <td>{agent.Password}</td>
                                         <td>{agent.Numero_cell}</td>
                                         <td> 
                                             <Link to={`/admin/crudAdmin/modificaAgente?agenteId=${agent.Id_agente}`}><button>Modifica</button></Link>

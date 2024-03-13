@@ -2,7 +2,6 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
 import axios from 'axios';
 import "../StileTabella.css";
 
@@ -16,7 +15,7 @@ function ModificaPropietario() {
         Id_propietario:''
     });
     const [successMessage, setSuccessMessage] = React.useState('');
-    const [errors] = React.useState({
+    const [errors, setErrors] = React.useState({
         nome: '',
         email: '',
         cognome: '',
@@ -24,8 +23,7 @@ function ModificaPropietario() {
     });
 
     React.useEffect(() => {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -52,36 +50,59 @@ function ModificaPropietario() {
             }
         }
     }, [location]);
-    
-    
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        if (!Object.values(propDet).some(value => value === "")) {
+    
+        const errorsCopy = { ...errors };
+        let hasErrors = false;
+    
+        // Controllo se ci sono campi vuoti
+        for (const key in propDet) {
+            if (propDet[key] === "") {
+                errorsCopy[key.toLowerCase()] = "Questo campo non può essere vuoto";
+                hasErrors = true;
+            }
+        }
+    
+        // Controllo lunghezza numero telefonico
+        if (propDet.Numero_cell.length < 6 || propDet.Numero_cell.length > 12) {
+            errorsCopy.numero_cell = "Il numero telefonico deve essere lungo tra 6 e 12 caratteri";
+            hasErrors = true;
+        }
+    
+        if (!hasErrors) {
             axios.post('http://localhost:8081/admin/crudAdmin/modificaProp', propDet)
-            .then(response => {
-                if(response.data.status === "Success") {
-                    setSuccessMessage("Utente modificato con successo!");
-                } else {
-                    console.log("Failed to update user");
-                }
-            })
-            .catch(error => {
-                console.log("Error updating user:", error);
-            });
+                .then(response => {
+                    if (response.data.status === "Success") {
+                        setSuccessMessage("Utente modificato con successo!");
+                    } else {
+                        console.log("Failed to update user");
+                    }
+                })
+                .catch(error => {
+                    console.log("Error updating user:", error);
+                });
+        } else {
+            setErrors(errorsCopy);
         }
     };
-
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
+        const errorsCopy = { ...errors };
+    
+        // Reset degli errori quando il campo viene modificato
+        errorsCopy[name.toLowerCase()] = "";
+        setErrors(errorsCopy);
+    
         setOwners(prevUserDet => ({
             ...prevUserDet,
             [name]: value
         }));
     };
     
-
+    
     return (
         <>
             <AdBar />

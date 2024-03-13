@@ -2,7 +2,7 @@ function Validation(values) {
 
     let error = {}
     const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const password_pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const password_pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,30}$/;
 
     if(values.name === "") {
         error.name = "Nome vuoto";
@@ -21,7 +21,7 @@ function Validation(values) {
     if(values.password === "") {
         error.password = "Password vuota";
     } else if(! password_pattern.test(values.password)) {
-        error.password = "password errata !";
+        error.password = "password errata! Deve essere min 8 e max 30 caratteri alfanumerici";
     } else {
         error.password = "";
     }

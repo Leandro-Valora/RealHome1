@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import AdBar from './AdBar';
 import Footer from '../components/Footer';
-import UserProfile from '../UserProfile';
 import axios from 'axios';
 import '../Client/DettagliCasa.css';
 
@@ -23,8 +22,7 @@ function DettagliCasaAdmin() {
     const [enlargedImage, setEnlargedImage] = useState(null);
 
     React.useEffect(() => {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !(localStorage.getItem('userName'))) {
+        if (localStorage.getItem('userName')==="logout" || !(localStorage.getItem('userName'))) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         } else {
@@ -135,7 +133,7 @@ function DettagliCasaAdmin() {
                     <p><strong>Paese:</strong> {casaDet.Paese ? casaDet.Paese.charAt(0).toUpperCase() + casaDet.Paese.slice(1) : ''}</p>
                     <p><strong>Città:</strong> {casaDet.Citta ? casaDet.Citta.charAt(0).toUpperCase() + casaDet.Citta.slice(1) : ''}</p>
                     <p><strong>Via:</strong> {casaDet.Via ? casaDet.Via.charAt(0).toUpperCase() + casaDet.Via.slice(1) : ''}</p>
-                    <p><strong>Prezzo:</strong> € {casaDet.Prezzo}</p>
+                    <p><strong>Prezzo:</strong> € {parseFloat(casaDet.Prezzo).toFixed(2)}</p>
                     <p><strong>Descrizione:</strong></p><p>{casaDet.Descrizione}</p>
                     <br />
                     <h2 className='info-casa'>Agente Immobiliare</h2>

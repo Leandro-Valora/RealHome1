@@ -74,7 +74,7 @@ class Contatti extends Component {
                     <h3>Per contattarci facilmente</h3>
                 </div>
                 {/* Form di contatto */}
-                {this.state.successMessage && <p className="success-message">{this.state.successMessage}</p>}
+                <center>{this.state.successMessage && <p className="success-message">{this.state.successMessage}</p>}</center>
                 {this.state.error && <p className="error-message">{this.state.error}</p>}
                 <br />
                 <form className="contact-form" onSubmit={this.handleSubmit}>

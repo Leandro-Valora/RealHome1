@@ -1,6 +1,5 @@
 import React from 'react';
 import Footer from '../components/Footer';
-import UserProfile from '../UserProfile';
 import AgenteBar from './AgenteBar';
 import villa1 from "../ville/avi.jpg";
 import villa2 from "../ville/dinuka.jpg";
@@ -14,8 +13,7 @@ class HomeAgente extends React.Component {
     }
 
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')==="logout" || !localStorage.getItem('userName')) {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import AdBar from '../AdBar';
 import Footer from '../../components/Footer';
-import UserProfile from '../../UserProfile';
 import CasaValidation from '../../CasaValidation';
 import axios from 'axios';
 import './Stile.css';
+import { Link } from 'react-router-dom';
 
 class CreateCasa extends Component {
     state = {
@@ -40,8 +40,7 @@ class CreateCasa extends Component {
     }
 
     componentDidMount() {
-        const userName = UserProfile.getName();
-        if ((!userName || userName.trim() === "generic") && !localStorage.getItem('userName')) {
+        if (!localStorage.getItem('userName') || localStorage.getItem('userName')==="logout")  {
             // Reindirizza l'utente alla pagina principale se il nome è vuoto
             window.location.href = "/";
         }
@@ -221,7 +220,7 @@ class CreateCasa extends Component {
                                     </div>
                                     <div className="login-form-group">
                                         <label htmlFor="prezzo">
-                                            <strong>Prezzo</strong> <i>(ricorda di usare il punto)</i>
+                                            <strong>Prezzo</strong> <i>(non usare ne , ne .)</i>
                                         </label>
                                         <div className="price-input-container">
                                             <span className="currencyinput">€</span>
@@ -261,6 +260,7 @@ class CreateCasa extends Component {
                                         {errors.descrizione && <span className="text-danger">{errors.descrizione}</span>}
                                     </div>
                                     <button type="submit" className="login-btn btn btn-success"> Create </button>
+                                    <Link to="/admin/listaCase"><button type="submit" className="login-btn btn "> Indietro </button></Link>
                                 </form>
                             </div>
                         </div>
