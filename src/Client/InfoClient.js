@@ -18,6 +18,7 @@ function InfoClient() {
                 } else {
                     // Effettua la chiamata al backend per ottenere le informazioni dell'utente
                     const valoreId = localStorage.getItem('userId');
+                
                     const response = await axios.get('http://localhost:8081/Client/InfoClient', {
                         params: {
                             Id_signup: valoreId

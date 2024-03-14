@@ -59,8 +59,9 @@ function ModificaClient() {
             .then(response => {
                 if(response.data.status === "Success") {
                     UserProfile.setName(userDet.Name);
-                    console.log("userdet: " + userDet.Name);
+                    localStorage.setItem('emailId', userDet.Email);
                     setSuccessMessage("Utente modificato con successo!");
+                    
                 } else {
                     console.log("Failed to update user");
                 }

@@ -29,7 +29,7 @@ class HomeClient extends Component {
     
     render() {
         // Se l'utente è già reindirizzato, non renderizzare nulla
-        if (UserProfile.getName() ==="generic" || UserProfile.getName()==="logout" || localStorage.getItem('userName') === "logout") {
+        if (!localStorage.getItem('userName') || localStorage.getItem('userName') === "logout") {
             return null;
         }
         else {

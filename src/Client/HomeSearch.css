@@ -2,6 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-right: 4%;
 }
 
 .house {
@@ -70,4 +71,63 @@
     top: 5px;
     right: 10px;
     cursor: pointer;
+}
+
+/* stile per cestino su preferiti */
+.trash-button1 {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border: 2px solid red;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.trash-button1::before {
+    content: "\2764"; /* Codice Unicode per il carattere del cuore */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: rgb(255, 1, 1);
+    font-size: 24px; /* Regola la dimensione del cuore */
+    text-align: center;
+    line-height: 40px; /* Assicura che il cuore sia centrato verticalmente */
+    opacity: 0.5; /* Regola l'opacità a tuo piacimento */
+    z-index: -1; /* Posiziona lo sfondo dietro il contenuto del pulsante */
+}
+
+.trash-button1::after {
+    content: "X";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px; /* Regola la dimensione della "x" */
+}
+  
+.piccolo1 {
+    font-size: 14px;
+}
+
+.house {
+    display: flex;
+    align-items: flex-start; /* Per allineare gli elementi lungo il bordo superiore */
+    width: 100%; /* Assicura che l'elemento occupi l'intera larghezza del contenitore */
+}
+
+.house-image {
+    flex: 0 0 40%; /* La dimensione della parte immagine rimane fissa */
+}
+
+.house-details {
+    flex: 1; /* Per far espandere questo elemento per riempire lo spazio rimanente */
+}
+
+.trash-button1 {
+    width: 40px; /* Larghezza fissa del pulsante */
+    margin-left: 0.5%;
+    margin-top: 0.5%;
 }

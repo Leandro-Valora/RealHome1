@@ -112,4 +112,28 @@
 .puntatore {
     cursor: pointer;
 }
-  
+
+/* stile per il cuore */
+.heart-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 30px; /* Aumentiamo la dimensione del font */
+    color: red;
+    padding: 6px; /* Aggiungiamo un po' di spazio intorno al cuore */
+    float: right;
+    margin-right: 40%;
+}
+
+.heart-icon::before {
+    content: "\2764"; /* Utilizziamo un codice unicode per un cuore più rotondo */
+    display: inline-block; /* Per consentire la regolazione delle dimensioni */
+    width: 1em; /* Larghezza uguale all'altezza */
+    height: 1em; /* Altezza del cuore */
+    line-height: 1em; /* Altezza della linea uguale all'altezza del cuore */
+    font-size: 1em; /* Dimensione del font uguale all'altezza del cuore */
+}
+
+.piccolo {
+    font-size: 14px;
+}

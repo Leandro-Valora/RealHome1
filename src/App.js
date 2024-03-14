@@ -37,6 +37,7 @@ import ModificaClient from './Client/ModificaClient';
 import HomeSearch from './Client/HomeSearch';
 import DettagliCasa from './Client/DettagliCasa';
 import MessaggiClient from './Client/MessaggiClient';
+import CasePreferite from './Client/CasePreferite';
 //agente
 import HomeAgente from './agente/HomeAgente';
 import InfoAgente from './agente/InfoAgente';
@@ -87,6 +88,7 @@ function App() {
         <Route path='/Client/homesearch' element={<HomeSearch />} />
         <Route path='/Client/dettaglicasa' element={<DettagliCasa />} />
         <Route path='/Client/messaggi' element={<MessaggiClient />} />
+        <Route path='/Client/preferiti' element={<CasePreferite />} />
 
         {/* AGENTE */}
         <Route path='/agente/homeAgente' element={<HomeAgente />} />

@@ -151,6 +151,52 @@ function DettagliCasa() {
         });
     };
 
+    const handleAddToFavorites = () => {
+        const casaId = new URLSearchParams(location.search).get('casaId');
+        const userId = localStorage.getItem('userId');
+        console.log("user id-> "+ userId);
+        console.log("casa id-> "+ casaId);
+    
+        axios.post('http://localhost:8081/Client/CheckPreferite', {
+            Id_user: userId,
+            Id_casaPref: casaId
+        })
+        .then(response => {
+            
+            if (response.data.status === "Success") {
+                axios.post('http://localhost:8081/Client/createPrefe', { 
+                    Id_user: userId,
+                    Id_casaPref: casaId
+                })
+                .then(response => {
+                    if(response.data.status === "Success") {
+                        setShowMessage(true); // Mostra il messaggio di successo
+                        setShowError(false); // Nasconde il messaggio di errore
+                    } else {
+                        console.log("Failed to fetch agente");
+                        setShowMessage(false); // Nasconde il messaggio di successo
+                        setShowError(true); // Mostra il messaggio di errore
+                    }
+                })
+                .catch(error => {
+                    console.log("Error fetching agenti:", error);
+                    setShowMessage(false); // Nasconde il messaggio di successo
+                    setShowError(true); // Mostra il messaggio di errore
+                });
+            } else {
+                console.log('casa già aggiunta');
+                setShowMessage(false); // Nasconde il messaggio di successo
+                setShowError(true); // Mostra il messaggio di errore
+            }
+        })
+        .catch(error => {
+            console.error('Errore durante l\'aggiunta della casa ai preferiti:', error);
+            setShowMessage(false); // Nasconde il messaggio di successo
+            setShowError(true); // Mostra il messaggio di errore
+        });
+    };  
+      
+
     return (
         <>
             <ClientBar />
@@ -182,7 +228,13 @@ function DettagliCasa() {
                     </div>
                 )}
                 <div className="house-info">
-                    <h2 className='info-casa'>Informazioni della Casa:</h2>
+                    <button className="heart-button" onClick={handleAddToFavorites}>
+                        <span className="heart-icon"></span>
+                        {showMessage && <span className="text-success"><p className='piccolo'>Aggiunto</p></span>}
+                        {showError && <span className="text-danger piccolo"><p className='piccolo'>Già nei preferiti</p></span>}
+                    </button>
+
+                    <h2 className='info-casa'>Informazioni della Casa</h2>
                     <p><strong>Nome:</strong> {casaDet.Nome ? casaDet.Nome.charAt(0).toUpperCase() + casaDet.Nome.slice(1) : ''}</p>
                     <p><strong>Paese:</strong> {casaDet.Paese ? casaDet.Paese.charAt(0).toUpperCase() + casaDet.Paese.slice(1) : ''}</p>
                     <p><strong>Città:</strong> {casaDet.Citta ? casaDet.Citta.charAt(0).toUpperCase() + casaDet.Citta.slice(1) : ''}</p>

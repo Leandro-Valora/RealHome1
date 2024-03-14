@@ -21,7 +21,6 @@ class MessaggiClient extends React.Component {
             axios.post('http://localhost:8081/Client/recive-email', { Email_richiedente: localStorage.getItem('emailId') })
             .then(response => {
                 if(response.data.status === "Success") {
-                    // Aggiorna lo stato con i dati degli amministratori ottenuti dal backend
                     if (Array.isArray(response.data.emails)) {
                         this.setState({ emails: response.data.emails });
                       } else {
@@ -79,7 +78,7 @@ class MessaggiClient extends React.Component {
                 <br />
                 <div>
                     <header>
-                        <h1 className='titolo-1'><center>Messaggi da aprte dell'Agente Immobiliare </center></h1>
+                        <h1 className='titolo-1'><center>Messaggi da parte dell'Agente Immobiliare </center></h1>
                     </header>
                     <br />
                     <main>
@@ -95,9 +94,10 @@ class MessaggiClient extends React.Component {
                                         <div className="info-item"><strong>TITOLO:</strong> {contatto.Titolo}</div>
                                     </div>
                                     <div className="message-content">
-                                        {console.log("contenuto-> " + JSON.stringify(contatto))}
-                                        <strong>MESSAGGIO:</strong> {contatto.Descrizione_email}
+                                        <strong>MESSAGGIO</strong> <br />
+                                        {contatto.Descrizione_email}
                                     </div>
+                                    <br />
                                     <button className="delete-button" onClick={() => this.handleDeleteContatto(contatto)}>Elimina</button>
                                 </div>
                             ))}
