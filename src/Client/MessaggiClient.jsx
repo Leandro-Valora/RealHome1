@@ -82,7 +82,7 @@ class MessaggiClient extends React.Component {
                     </header>
                     <br />
                     <main>
-                        <h3><strong>&nbsp; Lista Messaggi </strong></h3>
+                        <h3><strong>&nbsp; &nbsp; Lista Messaggi </strong></h3>
                         <div className="message-list">
                             {Array.isArray(this.state.emails) && this.state.emails.map(contatto => (
                                 <div className="message" key={contatto.Id_email}>

@@ -84,9 +84,9 @@ class ListaAdmin extends Component {
                     </header>
                     <br />
                     <main>
-                        <h3>Vuoi inserire un nuovo amministratore ? <Link to="/admin/crudAdmin/CreateAdmin" > Clicca qui </Link></h3>
+                        <h3> &nbsp; &nbsp; Vuoi inserire un nuovo amministratore ? <Link to="/admin/crudAdmin/CreateAdmin" > Clicca qui </Link></h3>
                         <br />
-                        <h3><strong>Tabella Amministratori</strong></h3>
+                        <h3 className='h3-tabella'><strong>Tabella Amministratori</strong></h3>
                         <table className="table-lista">
                             <thead className="thead-dark">
                                 <tr>

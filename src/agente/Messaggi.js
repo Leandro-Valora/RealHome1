@@ -149,7 +149,7 @@ class Messaggi extends React.Component {
                     </header>
                     <br />
                     <main>
-                        <h3><strong>Tabella Messaggi </strong></h3>
+                        <h3 className='h3-tabella'><strong>Lista Messaggi </strong></h3>
                         <table className="table-lista">
                             <thead className="thead-dark">
                                 <tr>

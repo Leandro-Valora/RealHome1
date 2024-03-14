@@ -103,7 +103,7 @@ class HomeSearchGeneric extends Component {
                 <Navbar />
                 <br />
                 <center><img src={logoEsteso} className="logo-esteso logo-esteso2" alt="Logo Esteso" /></center>
-                <h2 className='subtitle-1'><b><i>Elenco case disponibili</i></b></h2>
+                <h2 className='subtitle-1'><b><i>&nbsp; &nbsp; Elenco case disponibili</i></b></h2>
                 <br />
                 {/* Mostra le case */}
                 {this.state.loading ? (

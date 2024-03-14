@@ -84,7 +84,7 @@ class ListaPropietario extends Component {
                     </header>
                     <br />
                     <main>
-                        <h3>Vuoi inserire una nuovo propietario ? <Link to="/admin/crudAdmin/CreatePropierario" > Clicca qui </Link></h3>
+                        <h3> &nbsp; &nbsp; Vuoi inserire una nuovo propietario ? <Link to="/admin/crudAdmin/CreatePropierario" > Clicca qui </Link></h3>
                         <br />
                         <h3 className='h3-tabella'><strong>Tabella Propietari Immobiliari</strong></h3>
                         <table className="table-lista">

@@ -47,7 +47,7 @@ function InfoAgente() {
             <div>
                 <div className="container-1">
                     <Link to="/Client/homeClient"><img src={logoEsteso} className="logo-esteso" alt="Logo Esteso" /> </Link>
-                    <h2 className='titolo-2'><center>Info Personali</center></h2>
+                    <h2 className='titolo-2'><center>Informazioni Personali</center></h2>
                 </div>
                 <br />
                 <main className='main-content'>

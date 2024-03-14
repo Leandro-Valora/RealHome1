@@ -84,8 +84,8 @@ class ListaCase extends Component {
                     </header>
                     <br />
                     <main>
-                        <h3>Vuoi inserire una nuova dimora ? <Link to="/admin/crudAdmin/CreateCasa" > Clicca qui </Link></h3>
-                        <h3>Vuoi inserire delle immagini degli interni ? <Link to="/admin/crudAdmin/addimageCasa" > Aggiungi immagini </Link></h3>
+                        <h3> &nbsp; &nbsp; Vuoi inserire una nuova dimora ? <Link to="/admin/crudAdmin/CreateCasa" > Clicca qui </Link></h3>
+                        <h3> &nbsp; &nbsp; Vuoi inserire delle immagini degli interni ? <Link to="/admin/crudAdmin/addimageCasa" > Aggiungi immagini </Link></h3>
                         <br />
                         <h3 className='h3-tabella'><strong>Tabella Case</strong></h3>
                         <table className="table-lista">

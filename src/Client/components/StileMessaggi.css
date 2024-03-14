@@ -1,6 +1,8 @@
 .message-list {
     display: grid;
     gap: 20px;
+    margin-left: 3%;
+    margin-right: 5%;
 }
 
 .message {
