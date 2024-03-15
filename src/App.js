@@ -44,6 +44,7 @@ import InfoAgente from './agente/InfoAgente';
 import ModificaAgent from './agente/ModificaAgent';
 import Messaggi from './agente/Messaggi';
 import CaseAgente from './agente/CaseAgente';
+import MostraImages from './agente/MostraImages';
 
 function App() {
   return (
@@ -96,6 +97,7 @@ function App() {
         <Route path='/agente/modificaAgent' element={<ModificaAgent />} />
         <Route path='/agente/messaggi' element={<Messaggi />} />
         <Route path='/agente/case' element={<CaseAgente />} />
+        <Route path='/agente/images' element={<MostraImages />} />
 
       </Routes> 
     </BrowserRouter>

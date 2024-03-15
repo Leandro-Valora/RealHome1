@@ -101,7 +101,7 @@ class CaseAgente extends Component {
                                         <td>{casa.Via}</td>
                                         <td>{casa.Prezzo}</td>
                                         <td>
-                                            <Link to={`/admin/crudAdmin/modificaImage?casaId=${casa.Id_casa}`}>
+                                            <Link to={`/agente/images?casaId=${casa.Id_casa}`}>
                                                 <img src={casa.ImageURL} style={{ maxWidth: '150px' }} alt="Immagine" />
                                             </Link>
                                         </td>
