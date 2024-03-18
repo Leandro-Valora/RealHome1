@@ -21,7 +21,7 @@ function AdBar() {
         <>
             <nav className="navbar">
                 <div className="row-no-gutters">
-                    <a className="AdBar-brand" href="/">
+                    <a className="AdBar-brand" href="/admin/admin">
                         <img src={logo} alt="Logo" width="40" height="40" />
                     </a>
                     <div className="header-1">

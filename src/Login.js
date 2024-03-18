@@ -58,6 +58,8 @@ function Login() {
                     //console.log("variabile locale: " + localStorage.getItem('userName'));
                     
                     if(res.data.type === "Admin") {
+                        const idAdmin = res.data.Id_signup;
+                        localStorage.setItem('adId', idAdmin);
                         navigate("/admin/Admin");
                     }
                     else if(res.data.type === "Signup") {

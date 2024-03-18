@@ -90,19 +90,36 @@ class CreateCasa extends Component {
         this.setState({ errors: CasaValidationErrors });
         
         if (!Object.values(CasaValidationErrors).some(error => error !== "") && !Object.values(this.state.values).some(value => value === "")) {
-            axios.post('http://localhost:8081/admin/crudAdmin/createCasa', this.state.values)
-                .then(response => {
-                    if(response.data.status === "Success") {
+            // Effettua la query per verificare se esiste già una casa con gli stessi valori
+            axios.post('http://localhost:8081/admin/crudAdmin/checkDuplicateCasa', this.state.values)
+                .then(resp => {
+                    console.log("--> " + resp.data.status);
+                    if (resp.data.status === "Success") {
+                        // Se non ci sono case duplicate, procedi con la creazione
+                        axios.post('http://localhost:8081/admin/crudAdmin/createCasa', this.state.values)
+                            .then(response => {
+                                if(response.data.status === "Success") {
+                                    this.setState({ 
+                                        successMessage: "Casa creata con successo!",
+                                        showMessage: true
+                                    });
+                                } else {
+                                    console.log("Failed to create casa");
+                                }
+                            })
+                            .catch(error => {
+                                console.log("Error creating casa:", error);
+                            });
+                    } else {
+                        // Se esiste già una casa con gli stessi valori, mostra un messaggio di errore
                         this.setState({ 
-                            successMessage: "Casa creata con successo!",
+                            successMessage: "Esiste già una casa con gli stessi valori!",
                             showMessage: true
                         });
-                    } else {
-                        console.log("Failed to fetch casa");
                     }
                 })
                 .catch(error => {
-                    console.log("Error fetching case:", error);
+                    console.log("Error checking duplicate casa:", error);
                 });
         }
     };

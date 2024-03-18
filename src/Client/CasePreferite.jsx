@@ -46,8 +46,9 @@ class CasePreferite extends Component {
         axios.post('http://localhost:8081/Client/DeletePreferite', { Id_prefe: prefeId })
             .then(response => {
                 if (response.data.status === "Success") {
-                    // Se l'eliminazione ha successo, aggiorna lo stato delle case preferite
-                    this.getPreferredHomes();
+                    // Rimuovi l'elemento eliminato dalla lista delle case preferite
+                    const updatedList = this.state.listaCase.filter(house => house.Id_prefe !== prefeId);
+                    this.setState({ listaCase: updatedList });
                 } else {
                     console.log("Errore durante l'eliminazione della casa preferita:", response.data.message);
                 }
@@ -56,6 +57,7 @@ class CasePreferite extends Component {
                 console.error("Errore durante l'eliminazione della casa preferita:", error);
             });
     }
+    
 
     render() {
         return (
@@ -99,7 +101,7 @@ class CasePreferite extends Component {
                                 </div>
                             </div>
                         ))}
-                        {this.state.listaCase.length === 0 && <p>Nessun risultato trovato.</p>}
+                        {this.state.listaCase.length === 0 && <p>&nbsp;&nbsp; Nessun casa tra i preferiti.</p>}
                     </div>
                 )}
                 <div>

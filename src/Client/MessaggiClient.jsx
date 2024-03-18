@@ -9,7 +9,8 @@ class MessaggiClient extends React.Component {
         footers: [
             { id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home'}        
         ],
-        contattoToDelete: ''
+        contattoToDelete: '',
+        showMessageError: false
     }
 
     componentDidMount() {
@@ -29,6 +30,7 @@ class MessaggiClient extends React.Component {
                       
                 } else {
                     console.log("Failed to fetch email");
+                    this.setState({ showMessageError: true });
                 }
             })
             .catch(error => {
@@ -57,6 +59,8 @@ class MessaggiClient extends React.Component {
                                 }
                             } else {
                                 console.log("Failed to fetch messages");
+                                window.location.reload("/Client/messaggi");
+                                this.setState({ showMessageError: true });
                             }
                         })
                         .catch(error => {
@@ -84,6 +88,8 @@ class MessaggiClient extends React.Component {
                     <main>
                         <h3><strong>&nbsp; &nbsp; Lista Messaggi </strong></h3>
                         <div className="message-list">
+                        {this.state.showMessageError && <span className="text-danger"><p>Non ci sono messaggi per te!</p></span>}
+
                             {Array.isArray(this.state.emails) && this.state.emails.map(contatto => (
                                 <div className="message" key={contatto.Id_email}>
                                     <div className="message-info">

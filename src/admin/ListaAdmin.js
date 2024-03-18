@@ -4,13 +4,15 @@ import AdBar from './AdBar';
 import Footer from '../components/Footer';
 import "./StileTabella.css";
 import axios from 'axios';
+import Alert from '@mui/material/Alert';
 
 class ListaAdmin extends Component {
     state = {
         footers: [
             { id: 0, indirizzo: 'Parma, PR 43122, IT', email: 'infoaboutRH@gmail.com', telefono: '+39 0375 833639', cellulare: '+39 345 6139884', brand: 'Real - Home'}        
         ],
-        adminToDelete: null
+        adminToDelete: null,
+        errorMessage: ''
     }
 
     componentDidMount() {
@@ -43,9 +45,16 @@ class ListaAdmin extends Component {
         this.setState({ adminToDelete: admin });
     }
 
+    resetErrorMessage = () => {
+        this.setState({ errorMessage: '' });
+    }
+
     confirmDeleteAdmin = () => {
-        const adminId = this.state.adminToDelete.Id_admin;
-        axios.post('http://localhost:8081/admin/AdminDelete', { Id_admin: adminId })
+        const adminId = parseInt(this.state.adminToDelete.Id_admin);
+        const varId = parseInt(localStorage.getItem('adId'));
+
+        if(varId !== adminId) {
+            axios.post('http://localhost:8081/admin/AdminDelete', { Id_admin: adminId })
             .then(resp => {
                 if (resp.data.status === "Success") {
                     // Richiama la funzione per ottenere la lista aggiornata degli utenti
@@ -71,6 +80,10 @@ class ListaAdmin extends Component {
             .catch(error => {
                 console.log("Error deleting admins:", error);
             });
+        }
+        else {
+            this.setState({ errorMessage: "Non puoi cancellare il tuo account!" });
+        }
     }
     
     render() {
@@ -130,9 +143,15 @@ class ListaAdmin extends Component {
                 {this.state.adminToDelete && (
                     <div className="popup">
                         <div className="popup-inner">
+                            {this.state.errorMessage && (
+                                <Alert severity="warning">Non puoi cancellare il tuo account!</Alert>
+                            )}
                             <p>Sei sicuro di voler eliminare l' amministratore ?</p>
                             <button onClick={this.confirmDeleteAdmin}>Conferma</button>
-                            <button onClick={() => this.setState({ adminToDelete: null })}>Annulla</button>
+                            <button onClick={() => {
+                                this.setState({ adminToDelete: null });
+                                this.resetErrorMessage(); // Resetta l'errore
+                            }}>Annulla</button>
                         </div>
                     </div>
                 )}

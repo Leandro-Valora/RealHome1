@@ -8,7 +8,7 @@ function AgenteBar() {
         <>
             <nav className="clientBar">
                 <div className="row-no-gutters">
-                    <a className="clientBar-brand" href="/">
+                    <a className="clientBar-brand" href="/agente/homeAgente">
                         <img src={logo} alt="Logo" width="40" height="40" />
                     </a>
                     <div className="header-1">

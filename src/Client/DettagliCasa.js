@@ -89,6 +89,8 @@ function DettagliCasa() {
                     console.log("Error fetching imags details:", error);
                 });
 
+                setShowMessage(false);
+
             } else {
                 console.log("User ID not found in URL");
             }
@@ -134,12 +136,22 @@ function DettagliCasa() {
             Descrizione_msg: formData.descrizione
         })
         .then(response => {
-            console.log('Email inviata con successo:');
+            console.log('Email inviata con successo');
             setShowMessage(true);
+            // Reinizializza i campi
+            setFormData({
+                titolo: '',
+                descrizione: ''
+            });
         })
         .catch(error => {
             console.error('Errore durante l\'invio dell\'email:', error);
             setShowError(true);
+            // Reinizializza i campi
+            setFormData({
+                titolo: '',
+                descrizione: ''
+            });
         });
     };
 
@@ -154,8 +166,6 @@ function DettagliCasa() {
     const handleAddToFavorites = () => {
         const casaId = new URLSearchParams(location.search).get('casaId');
         const userId = localStorage.getItem('userId');
-        console.log("user id-> "+ userId);
-        console.log("casa id-> "+ casaId);
     
         axios.post('http://localhost:8081/Client/CheckPreferite', {
             Id_user: userId,
@@ -250,7 +260,7 @@ function DettagliCasa() {
                     <br />
                     <h2 className='info-casa puntatore' onClick={toggleHouseForm}>Scrivimi per più info &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+</h2>
                     <div className="house-form" style={{ display: showHouseForm ? 'block' : 'none' }}>
-                    <p>{showMessage && <span className="text-success">{formData.titolo} : inviato con successo</span>}</p>
+                    <p>{showMessage && <span className="text-success">Messaggio inviato con successo</span>}</p>
                     <p>{showError && <span className="text-danger">Errore invio messaggio</span>}</p>
                         <form onSubmit={handleSubmit}>
                             <label htmlFor="titolo">Oggetto:</label><br />
