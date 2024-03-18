@@ -42,7 +42,7 @@ function AdBar() {
                                 <Link to="/admin/listaAgente" className="btn btn-outline-primary"> Lista Agente </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/admin/listaPropietario" className="btn btn-outline-primary"> Lista Propietario Casa </Link>
+                                <Link to="/admin/listaPropietario" className="btn btn-outline-primary"> Lista Proprietario Casa </Link>
                             </li>
                             <li className="nav-item">
                                 <Link to="/admin/caseVendute" className="btn btn-outline-primary"> Case Vendute </Link>
